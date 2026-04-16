@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Critical Review: Luria & Delbrück (1943)</title>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+<style>
+  :root {
+    --green: #16a34a;
+    --green-bg: #f0fdf4;
+    --green-border: #bbf7d0;
+    --amber: #d97706;
+    --amber-bg: #fffbeb;
+    --amber-border: #fde68a;
+    --red: #dc2626;
+    --red-bg: #fef2f2;
+    --red-border: #fecaca;
+    --blue: #2563eb;
+    --blue-bg: #eff6ff;
+    --blue-border: #bfdbfe;
+    --gray-50: #f9fafb;
+    --gray-100: #f3f4f6;
+    --gray-200: #e5e7eb;
+    --gray-400: #9ca3af;
+    --gray-600: #4b5563;
+    --gray-800: #1f2937;
+    --gray-900: #111827;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Georgia', 'Noto Serif SC', serif;
+    line-height: 1.8;
+    color: var(--gray-800);
+    background: #fff;
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 40px 24px 80px;
+  }
+
+  h1 {
+    font-size: 2.2em;
+    color: var(--gray-900);
+    margin-bottom: 8px;
+    line-height: 1.3;
+  }
+
+  h2 {
+    font-size: 1.5em;
+    color: var(--gray-900);
+    margin-top: 56px;
+    margin-bottom: 20px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid var(--gray-200);
+  }
+
+  h3 {
+    font-size: 1.15em;
+    color: var(--gray-800);
+    margin-top: 32px;
+    margin-bottom: 12px;
+  }
+
+  p { margin-bottom: 16px; }
+
+  .subtitle {
+    font-size: 1.05em;
+    color: var(--gray-600);
+    margin-bottom: 32px;
+    font-style: italic;
+  }
+
+  .meta {
+    font-size: 0.85em;
+    color: var(--gray-400);
+    margin-bottom: 48px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid var(--gray-200);
+  }
+
+  /* Belief badges */
+  .belief {
+    display: inline-block;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-weight: 700;
+    border-radius: 6px;
+    padding: 2px 10px;
+    font-size: 0.95em;
+  }
+  .belief-high { background: var(--green-bg); color: var(--green); border: 1px solid var(--green-border); }
+  .belief-mid { background: var(--amber-bg); color: var(--amber); border: 1px solid var(--amber-border); }
+  .belief-low { background: var(--red-bg); color: var(--red); border: 1px solid var(--red-border); }
+
+  /* Big belief number */
+  .belief-big {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-weight: 800;
+    font-size: 3.5em;
+    line-height: 1;
+  }
+  .belief-big.high { color: var(--green); }
+  .belief-big.mid { color: var(--amber); }
+  .belief-big.low { color: var(--red); }
+
+  /* Callout boxes */
+  .callout {
+    border-radius: 8px;
+    padding: 20px 24px;
+    margin: 24px 0;
+    border-left: 4px solid;
+  }
+  .callout-green { background: var(--green-bg); border-color: var(--green); }
+  .callout-amber { background: var(--amber-bg); border-color: var(--amber); }
+  .callout-red { background: var(--red-bg); border-color: var(--red); }
+  .callout-blue { background: var(--blue-bg); border-color: var(--blue); }
+  .callout-title {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-weight: 700;
+    font-size: 0.9em;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 8px;
+  }
+  .callout-green .callout-title { color: var(--green); }
+  .callout-amber .callout-title { color: var(--amber); }
+  .callout-red .callout-title { color: var(--red); }
+  .callout-blue .callout-title { color: var(--blue); }
+
+  /* Progress bar */
+  .bar-container {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 10px 0;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+  }
+  .bar-label {
+    flex: 0 0 280px;
+    font-size: 0.88em;
+    color: var(--gray-600);
+    text-align: right;
+  }
+  .bar-track {
+    flex: 1;
+    height: 22px;
+    background: var(--gray-100);
+    border-radius: 11px;
+    overflow: hidden;
+    position: relative;
+  }
+  .bar-fill {
+    height: 100%;
+    border-radius: 11px;
+    transition: width 0.6s ease;
+  }
+  .bar-fill.high { background: linear-gradient(90deg, #22c55e, #16a34a); }
+  .bar-fill.mid { background: linear-gradient(90deg, #fbbf24, #d97706); }
+  .bar-fill.low { background: linear-gradient(90deg, #f87171, #dc2626); }
+  .bar-value {
+    flex: 0 0 48px;
+    font-weight: 700;
+    font-size: 0.92em;
+    text-align: left;
+  }
+  .bar-value.high { color: var(--green); }
+  .bar-value.mid { color: var(--amber); }
+  .bar-value.low { color: var(--red); }
+
+  /* Dashboard cards */
+  .dashboard {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin: 24px 0;
+  }
+  .card {
+    border: 1px solid var(--gray-200);
+    border-radius: 10px;
+    padding: 20px;
+    text-align: center;
+  }
+  .card-label {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 0.82em;
+    color: var(--gray-400);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 4px;
+  }
+  .card-main {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-weight: 800;
+    font-size: 2.4em;
+    line-height: 1.1;
+  }
+  .card-sub {
+    font-size: 0.85em;
+    color: var(--gray-600);
+    margin-top: 4px;
+  }
+
+  /* Chain step */
+  .chain {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    margin: 24px 0;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+  }
+  .chain-step {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    padding: 14px 0;
+  }
+  .chain-dot {
+    flex: 0 0 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 0.85em;
+    color: #fff;
+    position: relative;
+  }
+  .chain-dot::after {
+    content: '';
+    position: absolute;
+    top: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 2px;
+    height: 24px;
+    background: var(--gray-200);
+  }
+  .chain-step:last-child .chain-dot::after { display: none; }
+  .chain-dot.high { background: var(--green); }
+  .chain-dot.mid { background: var(--amber); }
+  .chain-dot.low { background: var(--red); }
+  .chain-text { flex: 1; }
+  .chain-text strong { display: block; font-size: 0.95em; margin-bottom: 2px; }
+  .chain-text span { font-size: 0.85em; color: var(--gray-600); }
+
+  /* Mermaid */
+  .mermaid {
+    margin: 24px 0;
+    text-align: center;
+  }
+
+  /* Recommendation box */
+  .recommendation {
+    background: var(--gray-50);
+    border: 2px solid var(--gray-800);
+    border-radius: 10px;
+    padding: 28px;
+    margin: 32px 0;
+  }
+  .recommendation h3 {
+    margin-top: 0;
+    font-size: 1.1em;
+  }
+
+  /* Lead paragraph */
+  .lead {
+    font-size: 1.12em;
+    line-height: 1.9;
+    color: var(--gray-600);
+  }
+
+  blockquote {
+    border-left: 3px solid var(--gray-200);
+    padding-left: 20px;
+    margin: 20px 0;
+    color: var(--gray-600);
+    font-style: italic;
+  }
+
+  ul, ol { margin-bottom: 16px; padding-left: 24px; }
+  li { margin-bottom: 8px; }
+
+  .highlight {
+    background: linear-gradient(to bottom, transparent 60%, #fde68a 60%);
+    padding: 0 2px;
+  }
+
+  .section-num {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-weight: 800;
+    font-size: 0.75em;
+    color: var(--gray-400);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    display: block;
+    margin-bottom: 4px;
+  }
+
+  @media (max-width: 640px) {
+    .dashboard { grid-template-columns: 1fr; }
+    .bar-label { flex: 0 0 160px; font-size: 0.8em; }
+    .belief-big { font-size: 2.5em; }
+    .card-main { font-size: 1.8em; }
+  }
+</style>
+</head>
+<body>
+
+<h1>细菌是先知还是幸存者？</h1>
+<p class="subtitle">对 Luria & Delbrück (1943) "Mutations of Bacteria from Virus Sensitivity to Virus Resistance" 的推理图审稿报告</p>
+<p class="meta">基于 Gaia 知识图谱形式化 &middot; 35 个知识节点 &middot; 15 条推理策略 &middot; Junction Tree 精确推断</p>
+
+<!-- ==================== Section 1: Introduction ==================== -->
+
+<h2><span class="section-num">I. 导读</span>开一台老虎机</h2>
+
+<p class="lead">
+想象你面前有一百台老虎机。你往每台里投了一枚硬币，拉下拉杆。大多数什么都没吐出来。但有两三台突然哗哗往外吐金币——几百枚、上千枚。
+</p>
+
+<p>
+这就是1943年 Luria 和 Delbrück 看到的场景。只不过"老虎机"是装满大肠杆菌的培养皿，"金币"是活过了病毒屠杀的耐药菌。他们要回答的问题很简单：<strong>这些幸存者是早就变异了（先知），还是被病毒攻击时碰运气活下来的（幸存者）？</strong>
+</p>
+
+<p>
+答案藏在波动里。如果是碰运气，每个培养皿的幸存者数量应该差不多（就像每台老虎机吐出差不多的硬币）。但如果是提前变异的，那一个早期突变就会繁殖成一大群后代——像中了头奖一样——导致培养皿之间的差异极其巨大。
+</p>
+
+<p>
+实验结果？<span class="highlight">方差是均值的一百到六百倍。</span>不是两倍、三倍——是几百倍。"碰运气"假说当场阵亡。
+</p>
+
+<p>
+但故事没有这么简单。当我们把整篇文章拆解成一张推理图，用概率传播算法追踪每一步论证的可信度时，我们发现了一些仅仅读文章很难察觉的东西：论证的骨架并不像修辞那样漂亮。
+</p>
+
+<!-- ==================== Section 2: Verdict Dashboard ==================== -->
+
+<h2><span class="section-num">II. 一图看清</span>结论全景</h2>
+
+<div class="dashboard">
+  <div class="card">
+    <div class="card-label">主结论</div>
+    <div class="card-main" style="color: var(--green);">0.69</div>
+    <div class="card-sub">耐药性源于自发遗传突变</div>
+  </div>
+  <div class="card">
+    <div class="card-label">突变假说</div>
+    <div class="card-main" style="color: var(--amber);">0.58</div>
+    <div class="card-sub">被证据支持</div>
+  </div>
+  <div class="card">
+    <div class="card-label">获得性免疫假说</div>
+    <div class="card-main" style="color: var(--red);">0.04</div>
+    <div class="card-sub">被证据彻底否定</div>
+  </div>
+  <div class="card">
+    <div class="card-label">信息增益</div>
+    <div class="card-main" style="color: var(--blue);">0.3<span style="font-size:0.4em; font-weight:400;"> bits</span></div>
+    <div class="card-sub">推理结构减少的不确定性</div>
+  </div>
+</div>
+
+<p>下面是所有关键节点的置信度：</p>
+
+<div style="margin: 24px 0;">
+  <div class="bar-container">
+    <div class="bar-label">观测方差 >> 均值</div>
+    <div class="bar-track"><div class="bar-fill high" style="width:93%"></div></div>
+    <div class="bar-value high">0.93</div>
+  </div>
+  <div class="bar-container">
+    <div class="bar-label">免疫假说预测：方差=均值</div>
+    <div class="bar-track"><div class="bar-fill high" style="width:94%"></div></div>
+    <div class="bar-value high">0.94</div>
+  </div>
+  <div class="bar-container">
+    <div class="bar-label">主结论：自发突变</div>
+    <div class="bar-track"><div class="bar-fill mid" style="width:69%"></div></div>
+    <div class="bar-value mid">0.69</div>
+  </div>
+  <div class="bar-container">
+    <div class="bar-label">固定突变率定律</div>
+    <div class="bar-track"><div class="bar-fill mid" style="width:66%"></div></div>
+    <div class="bar-value mid">0.66</div>
+  </div>
+  <div class="bar-container">
+    <div class="bar-label">克隆分组现象</div>
+    <div class="bar-track"><div class="bar-fill mid" style="width:61%"></div></div>
+    <div class="bar-value mid">0.61</div>
+  </div>
+  <div class="bar-container">
+    <div class="bar-label">突变假说</div>
+    <div class="bar-track"><div class="bar-fill mid" style="width:58%"></div></div>
+    <div class="bar-value mid">0.58</div>
+  </div>
+  <div class="bar-container">
+    <div class="bar-label">突变率一致性</div>
+    <div class="bar-track"><div class="bar-fill mid" style="width:52%"></div></div>
+    <div class="bar-value mid">0.52</div>
+  </div>
+  <div class="bar-container">
+    <div class="bar-label">标准差/均值比</div>
+    <div class="bar-track"><div class="bar-fill mid" style="width:48%"></div></div>
+    <div class="bar-value mid">0.48</div>
+  </div>
+  <div class="bar-container">
+    <div class="bar-label">p₀ 与 mean 方法差异</div>
+    <div class="bar-track"><div class="bar-fill mid" style="width:56%"></div></div>
+    <div class="bar-value mid">0.56</div>
+  </div>
+  <div class="bar-container">
+    <div class="bar-label">分布拟合（实验23）</div>
+    <div class="bar-track"><div class="bar-fill low" style="width:40%"></div></div>
+    <div class="bar-value low">0.40</div>
+  </div>
+  <div class="bar-container">
+    <div class="bar-label">突变高方差预测</div>
+    <div class="bar-track"><div class="bar-fill low" style="width:28%"></div></div>
+    <div class="bar-value low">0.28</div>
+  </div>
+  <div class="bar-container">
+    <div class="bar-label">获得性免疫假说</div>
+    <div class="bar-track"><div class="bar-fill low" style="width:4%"></div></div>
+    <div class="bar-value low">0.04</div>
+  </div>
+</div>
+
+<div class="mermaid">
+graph TB
+    IMM["🟢 免疫假说预测：<br/>方差 = 均值<br/><b>0.94</b>"]:::high
+    MUT_VAR["🔴 突变预测：<br/>高方差<br/><b>0.28</b>"]:::low
+    OBS["🟢 观测：<br/>方差 >> 均值<br/><b>0.93</b>"]:::high
+    PLAT["🔴 铺板可靠性<br/><b>0.34</b>"]:::low
+    H_IMM["🔴 获得性免疫<br/><b>0.04</b>"]:::low
+    H_MUT["🟡 自发突变<br/><b>0.58</b>"]:::mid
+    RATE["🟡 固定突变率<br/><b>0.66</b>"]:::mid
+    CONC["🟢 主结论<br/><b>0.69</b>"]:::high2
+
+    IMM -->|"prior=0.02"| H_IMM
+    OBS -->|"falsifies"| H_IMM
+    MUT_VAR -->|"prior=0.9"| H_MUT
+    OBS -->|"confirms"| H_MUT
+    PLAT -->|"validates"| OBS
+    H_MUT --> CONC
+    OBS --> CONC
+    RATE --> CONC
+    H_IMM ---|"⊗ contradiction"| H_MUT
+
+    classDef high fill:#dcfce7,stroke:#16a34a,stroke-width:2px,color:#166534
+    classDef high2 fill:#dcfce7,stroke:#16a34a,stroke-width:3px,color:#166534
+    classDef mid fill:#fef9c3,stroke:#ca8a04,stroke-width:2px,color:#854d0e
+    classDef low fill:#fee2e2,stroke:#dc2626,stroke-width:2px,color:#991b1b
+</div>
+
+<!-- ==================== Section 3: Strongest Chain ==================== -->
+
+<h2><span class="section-num">III. 核心证据链</span>"大奖效应"如何杀死获得性免疫</h2>
+
+<p>
+整篇文章最有力的论证只需要三步。它贡献了推理图中最大的信息增益（0.09 bits），也是唯一一条能单独做出决定性判断的证据链：
+</p>
+
+<div class="chain">
+  <div class="chain-step">
+    <div class="chain-dot high">0.94</div>
+    <div class="chain-text">
+      <strong>理论预测：获得性免疫 → 泊松分布（方差 = 均值）</strong>
+      <span>如果每个细菌独立碰运气，那耐药菌数量服从泊松分布。这是本科概率论的教科书结论。</span>
+    </div>
+  </div>
+  <div class="chain-step">
+    <div class="chain-dot high">0.93</div>
+    <div class="chain-text">
+      <strong>实验观测：方差是均值的 100–600 倍</strong>
+      <span>实验22：均值 10.12，方差 6,270。实验23：均值 28.6，方差 6,431。不是微弱的偏差——是几个数量级的碾压。</span>
+    </div>
+  </div>
+  <div class="chain-step">
+    <div class="chain-dot low">0.04</div>
+    <div class="chain-text">
+      <strong>结论：获得性免疫假说被否定</strong>
+      <span>理论说方差应该等于均值，实验说方差是均值的几百倍。没有任何弥合的余地。</span>
+    </div>
+  </div>
+</div>
+
+<div class="callout callout-green">
+  <div class="callout-title">判定：确凿</div>
+  <p>这条证据链的每个环节置信度都在 0.93 以上。否定获得性免疫假说是整篇文章中最可靠的结论——比支持突变假说还要可靠。<strong>这不是"A比B更可能"，而是"B几乎不可能"。</strong></p>
+</div>
+
+<!-- ==================== Section 4: What the paper got right ==================== -->
+
+<h2><span class="section-num">IV. 文章做对了什么</span></h2>
+
+<div class="callout callout-green">
+  <div class="callout-title">实验设计的优雅</div>
+  <p>
+  Luria 和 Delbrück的天才之处在于，他们没有试图直接观察突变——那在1943年的技术条件下几乎不可能。相反，他们<strong>用统计特征来区分两个假说</strong>。方差是均值的几百倍这个观测，不需要任何复杂的统计检验就能看出来：数据表里有些培养皿是0个耐药菌，有些是几百个。这种"一目了然"的效应量，让结论几乎不可能被实验噪音推翻。
+  </p>
+</div>
+
+<div class="callout callout-green">
+  <div class="callout-title">铺板对照实验</div>
+  <p>
+  文章做了一个容易被忽视但至关重要的事情：先验证了测量工具本身的可靠性。Table 1 的铺板对照实验证明，同一培养基的重复取样确实服从泊松分布（方差 ≈ 均值），排除了"方差大是因为测量不准"的替代解释。铺板可靠性的置信度被推理图拉低到 <span class="belief belief-low">0.34</span>（结构性原因，见下文），但实际数据——三次独立卡方检验，P = 0.2 到 0.8——是过硬的。
+  </p>
+</div>
+
+<div class="callout callout-green">
+  <div class="callout-title">跨条件一致性</div>
+  <p>
+  10种不同实验条件（不同培养体积、不同培养基、不同培养皿数量）得到的突变率都在 $1.1 \times 10^{-8}$ 到 $4.1 \times 10^{-8}$ 之间。这种跨条件一致性 <span class="belief belief-mid">0.66</span> 提供了独立于方差论证的第二条证据线：突变假说不仅解释了统计模式，还给出了一个可重复的定量参数。
+  </p>
+</div>
+
+<!-- ==================== Section 5: Where it breaks down ==================== -->
+
+<h2><span class="section-num">V. 论证的薄弱环节</span></h2>
+
+<h3>薄弱点 #1：被自己的推理链拖垮的理论预测</h3>
+
+<div class="callout callout-red">
+  <div class="callout-title">突变高方差预测 &mdash; 置信度 0.28</div>
+  <p>
+  "突变会产生高方差"是一个数学上完全正确的推导（方程11：var = Ca²Nt²），但它的置信度只有 <span class="belief belief-low">0.28</span>。为什么？因为它被三条不同的推理链同时引用：支持突变假说、拟合分布形状、验证标准差比值。每条链都在概率意义上"消耗"它，就像同一根柱子扛了三层楼的重量。
+  </p>
+  <p>
+  <strong>这是结构性问题，不是科学问题。</strong>数学推导本身无懈可击。但它暴露了文章论证结构的一个特点：太多结论依赖同一个中间节点。
+  </p>
+</div>
+
+<h3>薄弱点 #2：铺板可靠性——看不见的瓶颈</h3>
+
+<div class="callout callout-red">
+  <div class="callout-title">铺板方差 = 均值 &mdash; 置信度 0.34</div>
+  <p>
+  铺板对照实验的数据（三次卡方检验，P 值良好）完全过硬，但它的置信度被拉到了 <span class="belief belief-low">0.34</span>。原因和上面一样：这个节点参与了太多推理链（验证观测方差、支持突变假说、否定免疫假说）。
+  </p>
+  <p>
+  更重要的是，铺板可靠性是一个<strong>隐性瓶颈</strong>：如果这个节点有问题，三条看似独立的证据线会同时崩溃。读文章时你会觉得"方差数据"、"分布拟合"、"克隆分组"是三个独立的支撑，但推理图显示它们共享一个地基。
+  </p>
+</div>
+
+<h3>薄弱点 #3：理论和实验的定量差距</h3>
+
+<div class="callout callout-amber">
+  <div class="callout-title">分布拟合（实验23） &mdash; 置信度 0.40</div>
+  <p>
+  文章声称实验23的分布"吻合得不错"。但数字讲了另一个故事：实验22的标准差/均值比是 <strong>7.8</strong>，理论预测是 <strong>1.5</strong>——差了5倍。文章归因于"早期突变"，但这个解释从未被定量验证。
+  </p>
+  <p>
+  这不仅仅是推理图的结构性问题——这是一个<strong>真正的科学缺陷</strong>。理论模型的定量预测和实验数据之间存在系统性偏差，而这个偏差被文字修辞"the fitting is satisfactory"掩盖了。
+  </p>
+</div>
+
+<h3>薄弱点 #4：两种估算方法的5倍差异</h3>
+
+<div class="callout callout-amber">
+  <div class="callout-title">p₀ 方法 vs. 均值方法 &mdash; 差异 5倍</div>
+  <p>
+  p₀ 方法得到突变率 $0.47 \times 10^{-8}$，均值方法得到 $2.45 \times 10^{-8}$，差了5倍。文章的解释是"大奖文化使均值膨胀"——定性上合理，但从未定量验证这个5倍差异是否完全由大奖效应解释。如果不能，那至少有一种估算方法存在系统性偏差。
+  </p>
+</div>
+
+<!-- ==================== Section 6: Hidden Assumptions ==================== -->
+
+<h2><span class="section-num">VI. 隐藏的假设</span></h2>
+
+<div class="callout callout-blue">
+  <div class="callout-title">假设 #1：伪独立性</div>
+  <p>
+  文章给出三条"收敛的证据线"：方差、克隆分组、突变率一致性。表面上看是三个独立支撑。但推理图显示，这三条线<strong>共享关键前提</strong>：铺板可靠性（0.34）和突变高方差预测（0.28）。如果这两个节点中任何一个失效，三条线会同时被削弱。真正的独立证据线可能只有一条半。
+  </p>
+</div>
+
+<div class="callout callout-blue">
+  <div class="callout-title">假设 #2：单一实验系统</div>
+  <p>
+  所有实验都使用大肠杆菌 B + 噬菌体 alpha。文章的结论从标题开始就泛化到了"细菌的突变"，但数据只覆盖了一个宿主-病毒组合。推理图诚实地反映了这一点：主结论 <span class="belief belief-mid">0.69</span> 而不是 0.9+，因为从一个系统泛化到所有系统需要额外证据。
+  </p>
+</div>
+
+<div class="callout callout-blue">
+  <div class="callout-title">假设 #3："假说 b1" 的幽灵</div>
+  <p>
+  文章承认了一个棘手的问题：如果细菌天生就有"遗传倾向"去获得免疫，那这种"获得性免疫的遗传倾向型"（假说 b1）也会预测克隆分组——和突变假说一样。波动测试的方差数据无法区分这两者。文章用一句话带过了这个问题，但它意味着<strong>波动测试严格来说否定的是"纯碰运气"型获得性免疫，而不是所有非突变假说</strong>。
+  </p>
+</div>
+
+<!-- ==================== Section 7: Evidence Gaps ==================== -->
+
+<h2><span class="section-num">VII. 证据缺口</span></h2>
+
+<p>按照对主结论影响力排序：</p>
+
+<div style="margin: 24px 0;">
+
+<div class="callout callout-red">
+  <div class="callout-title">高优先级</div>
+
+  <h3>1. 缺少直接的克隆追踪实验</h3>
+  <p>
+  整篇文章用统计推断代替直接观察。如果能从培养基中分离出一个突变克隆，证明它的后代全都耐药，那就完全绕过了方差论证的所有结构性弱点。<br/>
+  <strong>影响：</strong> 会让主结论从 0.69 大幅提升。<br/>
+  <em>（后来 Newcombe 铺展实验和 Lederberg 影印培养技术做到了这一点。）</em>
+  </p>
+
+  <h3>2. 缺少对其他宿主-病毒系统的验证</h3>
+  <p>
+  用大肠杆菌 + 不同的噬菌体、用其他细菌 + alpha 噬菌体，或者最终用抗生素替代噬菌体做筛选，都能检验结论的泛化性。<br/>
+  <strong>影响：</strong> 会解决"单一系统"这个最大的scope limitation。
+  </p>
+</div>
+
+<div class="callout callout-amber">
+  <div class="callout-title">中等优先级</div>
+
+  <h3>3. 定量解释理论-实验的 5 倍方差偏差</h3>
+  <p>
+  用考虑完整生长历史（包括 t₀ 之前的突变）的改进模型重新拟合分布数据。如果改进后的理论能解释标准差/均值比从 1.5 到 7.8 的差距，就消除了最大的定量弱点。<br/>
+  <strong>影响：</strong> 会让分布拟合从 0.40 显著提升。
+  </p>
+
+  <h3>4. 用最大似然法统一两种突变率估算</h3>
+  <p>
+  p₀ 方法只用零计数培养皿，均值方法被大奖培养皿拉偏。一个使用完整分布信息的最大似然估计器可以同时利用所有数据，给出更精确且自洽的突变率。<br/>
+  <strong>影响：</strong> 会消除两种方法间的 5 倍差异。
+  </p>
+</div>
+
+<div class="callout callout-green">
+  <div class="callout-title">低优先级（锦上添花）</div>
+
+  <h3>5. 测量回复突变率</h3>
+  <p>理论假设回复突变可忽略。直接测量可以验证这一假设。</p>
+
+  <h3>6. 检验突变率在不同生长阶段是否恒定</h3>
+  <p>指数期、稳定期的突变率可能不同。分阶段测量可以约束理论模型。</p>
+</div>
+
+</div>
+
+<!-- ==================== Section 8: Recommendation ==================== -->
+
+<h2><span class="section-num">VIII. 审稿建议</span></h2>
+
+<div class="recommendation">
+  <h3>综合评价：接受，需小幅修改（Minor Revision）</h3>
+  <p>
+  本文提出了一个优雅的实验设计，利用统计分布特征区分两个对立假说，并用大量实验数据做出了令人信服的判断。否定获得性免疫假说的证据是压倒性的（置信度 0.96 = 1 − 0.04），支持突变假说的证据是坚实的（0.58），主结论得到了多条证据线的收敛支持（0.69）。这项工作对微生物遗传学具有开创性意义。
+  </p>
+
+  <h3 style="margin-top: 20px;">要求修改的三个方面：</h3>
+  <ol>
+    <li><strong>定量解释标准差偏差。</strong>实验值系统性地超过理论预测（最大偏差 5 倍）。"归因于早期突变"的定性解释不够充分。请提供改进模型或量化分析。</li>
+    <li><strong>讨论假说 b1 的不可区分性。</strong>文章承认了"获得性免疫的遗传倾向型"无法被波动测试区分，但这一点在结论部分被淡化了。请明确说明波动测试排除的是哪种类型的假说。</li>
+    <li><strong>讨论泛化性的局限。</strong>所有实验使用单一宿主-病毒系统。请在结论部分明确声明泛化到其他系统需要额外实验验证。</li>
+  </ol>
+
+  <h3 style="margin-top: 20px;">怎样能让主结论的置信度超过 0.8？</h3>
+  <p>
+  两个最有效的方向：(1) 直接追踪突变克隆的遗传实验（绕过统计推断的所有结构性弱点）；(2) 在至少一个额外的宿主-病毒系统中重复波动测试。这两者中的任何一个都会将主结论从 0.69 推过 0.8 的门槛。
+  </p>
+</div>
+
+<p style="text-align: center; margin-top: 56px; color: var(--gray-400); font-size: 0.85em;">
+  Generated from <a href="https://github.com/SiliconEinstein/Gaia" style="color: var(--gray-400);">Gaia</a> reasoning graph formalization &middot;
+  <a href="ANALYSIS.md" style="color: var(--gray-400);">Detailed Analysis</a> &middot;
+  <a href="docs/detailed-reasoning.md" style="color: var(--gray-400);">Per-module Reasoning Graphs</a>
+</p>
+
+<script>
+  mermaid.initialize({ startOnLoad: true, theme: 'neutral', flowchart: { rankSpacing: 60, nodeSpacing: 20 } });
+</script>
+</body>
+</html>
