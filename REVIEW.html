@@ -304,6 +304,42 @@
     .belief-big { font-size: 2.5em; }
     .card-main { font-size: 1.8em; }
   }
+
+  /* CSS Tooltips */
+  .bar-label {
+    position: relative;
+    cursor: help;
+  }
+  .bar-label .tip {
+    display: none;
+    position: absolute;
+    bottom: calc(100% + 8px);
+    right: 0;
+    width: 300px;
+    background: var(--gray-900);
+    color: #fff;
+    font-size: 0.82em;
+    line-height: 1.5;
+    padding: 10px 14px;
+    border-radius: 8px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.18);
+    z-index: 100;
+    pointer-events: none;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-weight: 400;
+    text-align: left;
+  }
+  .bar-label .tip::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    right: 24px;
+    border: 6px solid transparent;
+    border-top-color: var(--gray-900);
+  }
+  .bar-label:hover .tip {
+    display: block;
+  }
 </style>
 </head>
 <body>
@@ -367,52 +403,52 @@
 
 <div style="margin: 24px 0;">
   <div class="bar-container">
-    <div class="bar-label" title="在所有波动实验中，重复培养皿间耐药菌数量的方差是均值的100到600倍，远超采样误差">观测方差 >> 均值</div>
+    <div class="bar-label">观测方差 >> 均值<span class="tip">在所有波动实验中，重复培养皿间耐药菌数量的方差是均值的100到600倍，远超采样误差</span></div>
     <div class="bar-track"><div class="bar-fill high" style="width:93%"></div></div>
     <div class="bar-value high">0.93</div>
   </div>
   <div class="bar-container">
-    <div class="bar-label" title="如果耐药性是每个细菌独立碰运气获得的（泊松过程），那重复培养皿的耐药菌计数应该方差=均值">免疫假说预测：方差=均值</div>
+    <div class="bar-label">免疫假说预测：方差=均值<span class="tip">如果耐药性是每个细菌独立碰运气获得的（泊松过程），那重复培养皿的耐药菌计数应该方差=均值</span></div>
     <div class="bar-track"><div class="bar-fill high" style="width:94%"></div></div>
     <div class="bar-value high">0.94</div>
   </div>
   <div class="bar-container">
-    <div class="bar-label" title="大肠杆菌对噬菌体的耐药性源于自发的、可遗传的基因突变，而非病毒诱导的获得性免疫">主结论：自发突变</div>
+    <div class="bar-label">主结论：自发突变<span class="tip">大肠杆菌对噬菌体的耐药性源于自发的、可遗传的基因突变，而非病毒诱导的获得性免疫</span></div>
     <div class="bar-track"><div class="bar-fill mid" style="width:69%"></div></div>
     <div class="bar-value mid">0.69</div>
   </div>
   <div class="bar-container">
-    <div class="bar-label" title="从10种不同实验条件（不同培养基、体积、培养皿数量）估算出的突变率一致，约为 2.45×10⁻⁸">固定突变率定律</div>
+    <div class="bar-label">固定突变率定律<span class="tip">从10种不同实验条件（不同培养基、体积、培养皿数量）估算出的突变率一致，约为 2.45×10⁻⁸</span></div>
     <div class="bar-track"><div class="bar-fill mid" style="width:66%"></div></div>
     <div class="bar-value mid">0.66</div>
   </div>
   <div class="bar-container">
-    <div class="bar-label" title="耐药菌在不同培养皿中以大小不等的群体出现，说明它们有共同的突变祖先（克隆起源）">克隆分组现象</div>
+    <div class="bar-label">克隆分组现象<span class="tip">耐药菌在不同培养皿中以大小不等的群体出现，说明它们有共同的突变祖先（克隆起源）</span></div>
     <div class="bar-track"><div class="bar-fill mid" style="width:61%"></div></div>
     <div class="bar-value mid">0.61</div>
   </div>
   <div class="bar-container">
-    <div class="bar-label" title="细菌在接触病毒之前就已随机突变为耐药型，每个突变后代都是耐药的">突变假说</div>
+    <div class="bar-label">突变假说<span class="tip">细菌在接触病毒之前就已随机突变为耐药型，每个突变后代都是耐药的</span></div>
     <div class="bar-track"><div class="bar-fill mid" style="width:58%"></div></div>
     <div class="bar-value mid">0.58</div>
   </div>
   <div class="bar-container">
-    <div class="bar-label" title="用均值法估算的突变率在不同培养基、不同体积、不同实验间保持一致">突变率一致性</div>
+    <div class="bar-label">突变率一致性<span class="tip">用均值法估算的突变率在不同培养基、不同体积、不同实验间保持一致</span></div>
     <div class="bar-track"><div class="bar-fill mid" style="width:52%"></div></div>
     <div class="bar-value mid">0.52</div>
   </div>
   <div class="bar-container">
-    <div class="bar-label" title="实验观测的标准差/均值比与突变理论预测的比值相比较，实验值通常更大">标准差/均值比</div>
+    <div class="bar-label">标准差/均值比<span class="tip">实验观测的标准差/均值比与突变理论预测的比值相比较，实验值通常更大</span></div>
     <div class="bar-track"><div class="bar-fill mid" style="width:48%"></div></div>
     <div class="bar-value mid">0.48</div>
   </div>
   <div class="bar-container">
-    <div class="bar-label" title="p₀方法（基于零计数培养皿比例）得到0.47×10⁻⁸，均值方法得到2.45×10⁻⁸，差5倍">p₀ 与 mean 方法差异</div>
+    <div class="bar-label">p₀ 与 mean 方法差异<span class="tip">p₀方法（基于零计数培养皿比例）得到0.47×10⁻⁸，均值方法得到2.45×10⁻⁸，差5倍</span></div>
     <div class="bar-track"><div class="bar-fill mid" style="width:56%"></div></div>
     <div class="bar-value mid">0.56</div>
   </div>
   <div class="bar-container">
-    <div class="bar-label" title="实验23（87个培养皿）的耐药菌分布与突变理论预测曲线的拟合程度">分布拟合（实验23）</div>
+    <div class="bar-label">分布拟合（实验23）<span class="tip">实验23（87个培养皿）的耐药菌分布与突变理论预测曲线的拟合程度</span></div>
     <div class="bar-track"><div class="bar-fill low" style="width:40%"></div></div>
     <div class="bar-value low">0.40</div>
   </div>
