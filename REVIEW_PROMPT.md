@@ -39,8 +39,10 @@ Style: conversational, no jargon, could be read by a curious non-specialist. Thi
 A visual summary dashboard showing:
 - The main conclusion with its belief value (large, prominent)
 - A simplified reasoning graph (Mermaid) showing only the 5-8 most important nodes
-- Color-coded belief bars for each exported conclusion
+- Color-coded belief bars for each exported conclusion — **add `title` attributes with plain-language explanations** so readers can hover to see what each node means
 - One-sentence verdict for each conclusion
+
+**Key node explanations:** After the Mermaid graph, include a "关键概念速查" (key concepts) callout box that explains in 1-2 sentences each key term that appears in the graph or bar chart. Domain-specific terms (e.g., "Poisson distribution", "variance >> mean") should be explained with concrete examples, not just definitions. The reader should never encounter a node label without being able to understand what it refers to.
 
 ### 3. The Strongest Evidence Chain (最有力的证据链)
 
@@ -61,10 +63,19 @@ Use green callout boxes and specific numbers.
 
 ### 5. Where the Argument Breaks Down (论证的薄弱环节)
 
-The core critical analysis section. For each weak point (3-5):
-- A red/amber callout box with the claim name and belief
-- Plain-language explanation of what went wrong
-- Whether the weakness is **structural** (graph artifact) or **scientific** (genuine gap)
+The core critical analysis section. **Only include genuine scientific weak points — NOT belief propagation artifacts.**
+
+**Critical: filtering out BP structural artifacts.** When a claim participates as a premise in multiple strategies, BP's message-passing algorithm can artificially suppress its belief through multiplicative "pull" from each factor node. This is a known limitation of factor-graph inference — a mathematical theorem does not become less true by being cited in three proofs. Before reporting a low-belief node as a weak point, ask:
+
+1. Is the claim's content a well-established mathematical derivation or directly observed experimental data?
+2. Is the low belief caused by the claim being referenced by 3+ strategies (check the reasoning graph)?
+3. Would a domain expert consider this claim genuinely questionable?
+
+If (1) is yes and (2) is yes and (3) is no, the low belief is a **BP artifact** — do NOT report it as a weak point. Instead, either omit it entirely or display the node in the reasoning graph with a label like "theoretically established" instead of showing the misleading numerical belief.
+
+For each genuine weak point (2-4):
+- A red/amber callout box with the claim name
+- Plain-language explanation of the genuine scientific gap
 - A "what would fix this" recommendation
 - Visual: a mini reasoning chain showing where the break occurs
 
