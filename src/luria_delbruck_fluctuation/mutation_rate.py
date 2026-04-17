@@ -1,6 +1,6 @@
 """Mutation Rate — Two estimation methods and consistent results across experiments."""
 
-from gaia.lang import claim, setting, support
+from gaia.lang import claim, setting, support, induction
 
 from .motivation import experimental_system, hypothesis_mutation
 from .theory import (
@@ -145,6 +145,20 @@ strat_synth_supports = support(
         "rate per physiological time unit."
     ),
     prior=0.8,
+)
+
+# Induction: two independent observation sets confirm the same law
+ind_mutation_rate = induction(
+    strat_broth_supports,
+    strat_synth_supports,
+    law=fixed_mutation_rate_law,
+    reason=(
+        "Broth culture experiments and synthetic medium experiments are conducted "
+        "under very different metabolic conditions (rich vs minimal medium) and "
+        "growth rates, yet yield overlapping mutation rate estimates. This "
+        "cross-condition independence strengthens the inductive evidence for a "
+        "fixed mutation rate."
+    ),
 )
 
 strat_consistent = support(

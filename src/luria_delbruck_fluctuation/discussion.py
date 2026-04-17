@@ -66,15 +66,3 @@ strat_aging = support(
     ),
     prior=0.75,
 )
-
-method_advantages = claim(
-    "The fluctuation test method for studying mutations causing virus resistance "
-    "has practical advantages: (1) segregation of mutant from normal organisms "
-    "occurs at the one-cell stage by total elimination of normal bacteria; "
-    "(2) more than $10^8$ bacteria may be tested on a single plate; "
-    "(3) the method is applicable whenever the initial number of bacteria times "
-    "the number of mutations per first division cycle is small, regardless of the "
-    "absolute mutation rate.",
-    title="Advantages of the fluctuation test method",
-    background=[experimental_system],
-)

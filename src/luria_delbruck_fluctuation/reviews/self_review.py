@@ -15,7 +15,7 @@ from ..exp_fluctuation import (
     observed_variance_much_greater_than_mean,
 )
 from ..mutation_rate import obs_broth_rate, obs_synth_rate
-from ..discussion import aging_cultures_constant_fraction, method_advantages
+from ..discussion import aging_cultures_constant_fraction
 
 REVIEW = ReviewBundle(
     source_id="self_review",
@@ -70,8 +70,5 @@ REVIEW = ReviewBundle(
         review_claim(aging_cultures_constant_fraction, prior=0.8,
             judgment="supporting",
             justification="Single experiment, qualitatively clear."),
-        review_claim(method_advantages, prior=0.9,
-            judgment="supporting",
-            justification="Factual methodological description."),
     ],
 )

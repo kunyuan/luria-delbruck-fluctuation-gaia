@@ -1,11 +1,13 @@
 """Experimental — The fluctuation test: comparing variance across independent cultures."""
 
-from gaia.lang import claim, setting, support
+from gaia.lang import claim, setting, support, compare, abduction
 
 from .motivation import (
     experimental_system,
     hypothesis_mutation,
     hypothesis_acquired_immunity,
+    immunity_predicts_poisson,
+    mutation_predicts_clonal_grouping,
 )
 from .theory import (
     immunity_variance_equals_mean,
@@ -127,32 +129,65 @@ clonal_grouping_observed = claim(
 )
 
 # === The central evidence: high variance supports mutation, refutes immunity ===
+# This is modeled as abduction (inference to the best explanation):
+# both hypotheses attempt to explain the same observation (high variance),
+# and the mutation hypothesis is decisively superior.
 
-# The mutation hypothesis predicts and explains the high variance
+# The mutation hypothesis explains the high variance observation
 strat_mutation_explains_variance = support(
-    [mutation_high_variance, observed_variance_much_greater_than_mean],
-    hypothesis_mutation,
+    [hypothesis_mutation],
+    observed_variance_much_greater_than_mean,
     reason=(
-        "@mutation_high_variance predicts variance >> mean due to the clonal "
-        "structure of resistant bacteria (early mutations → large clones → jackpots). "
-        "@observed_variance_much_greater_than_mean confirms this prediction: "
-        "variance/mean ratios of 100-600x in every experiment. The observation "
-        "matches the mutation prediction qualitatively and quantitatively."
+        "The @hypothesis_mutation predicts that resistant bacteria arise by "
+        "spontaneous mutation prior to virus exposure, creating clones of varying "
+        "sizes. Early mutations produce large clones ('jackpots'), late mutations "
+        "produce small clones. This clonal structure necessarily generates variance "
+        "far exceeding the mean across replicate cultures."
     ),
     prior=0.9,
 )
 
-# The acquired immunity hypothesis predicts variance = mean, which is falsified
-strat_immunity_falsified_by_variance = support(
-    [immunity_variance_equals_mean, observed_variance_much_greater_than_mean],
-    hypothesis_acquired_immunity,
+# The acquired immunity hypothesis fails to explain the high variance
+strat_immunity_fails = support(
+    [hypothesis_acquired_immunity],
+    observed_variance_much_greater_than_mean,
     reason=(
-        "@immunity_variance_equals_mean predicts Poisson distribution (variance = mean). "
-        "@observed_variance_much_greater_than_mean shows variance is 100-600x the mean "
-        "in every experiment. The acquired immunity prediction is falsified by orders "
-        "of magnitude. This observation is fatal to the hypothesis."
+        "The @hypothesis_acquired_immunity predicts each bacterium independently "
+        "survives virus attack with equal probability, giving a Poisson distribution "
+        "where variance equals mean. This cannot account for the observed variance "
+        "that is 100-600x the mean."
     ),
-    prior=0.02,
+    prior=0.1,
+    background=[immunity_predicts_poisson],
+)
+
+# Compare the two predictions against the observation
+comp_variance = compare(
+    mutation_high_variance,
+    immunity_variance_equals_mean,
+    observed_variance_much_greater_than_mean,
+    reason=(
+        "@mutation_high_variance predicts variance >> mean (equation 11-12), which "
+        "matches @observed_variance_much_greater_than_mean (variance/mean = 100-600x). "
+        "@immunity_variance_equals_mean predicts variance = mean (Poisson), which is "
+        "falsified by orders of magnitude. The mutation prediction matches the "
+        "observation qualitatively and quantitatively; the immunity prediction is "
+        "catastrophically wrong."
+    ),
+    prior=0.95,
+)
+
+# Abduction: inference to the best explanation
+abd_variance = abduction(
+    strat_mutation_explains_variance,
+    strat_immunity_fails,
+    comp_variance,
+    reason=(
+        "Both hypotheses attempt to explain the same observation: the distribution "
+        "of resistant bacteria across replicate cultures. The mutation hypothesis "
+        "predicts and explains the extreme variance; the acquired immunity hypothesis "
+        "predicts Poisson variance and is decisively refuted."
+    ),
 )
 
 # Plating reliability confirms the observation is real
@@ -190,21 +225,24 @@ strat_clonal = support(
     reason=(
         "@observed_variance_much_greater_than_mean shows bacteria appear in groups "
         "rather than randomly. @distribution_fit_exp23 shows the distribution shape "
-        "matches the clonal growth model. The simplest explanation for this grouping "
-        "is genetic relatedness — clones from common mutant ancestors."
+        "matches the clonal growth model. This is consistent with the theoretical "
+        "prediction @mutation_predicts_clonal_grouping that mutation produces clonal "
+        "grouping. The simplest explanation is genetic relatedness — clones from "
+        "common mutant ancestors."
     ),
     prior=0.85,
+    background=[fluctuation_protocol, mutation_predicts_clonal_grouping],
 )
 
-# Std dev ratio also matches mutation theory
-strat_std_ratio_match = support(
-    [experimental_std_dev_ratio, mutation_high_variance],
-    clonal_grouping_observed,
+# Std dev ratio provides additional quantitative evidence for high variance
+strat_std_ratio_supports_obs = support(
+    [experimental_std_dev_ratio],
+    observed_variance_much_greater_than_mean,
     reason=(
-        "@mutation_high_variance predicts std.dev./mean ratio >> 1 (equation 12). "
-        "@experimental_std_dev_ratio shows experimental ratios are in the same order "
-        "of magnitude (and typically even larger). Both experimental and theoretical "
-        "ratios are >> 1, ruling out Poisson and confirming clonal grouping."
+        "@experimental_std_dev_ratio shows the ratio of standard deviation to mean "
+        "is >> 1 in every experiment (ranging from 0.33 to 7.8), providing quantitative "
+        "confirmation that the variance dramatically exceeds the mean across all "
+        "experimental conditions."
     ),
-    prior=0.8,
+    prior=0.85,
 )
