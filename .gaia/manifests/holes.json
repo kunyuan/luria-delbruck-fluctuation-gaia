@@ -41,13 +41,23 @@
       ]
     },
     {
-      "content": "Under the acquired immunity hypothesis, each bacterium independently survives virus attack with a fixed small probability. The number of survivors follows a Poisson distribution, so the variance equals the mean: $\\text{var}(\\rho) = \\bar{\\rho}$. Derivation: binomial distribution with small success probability → Poisson approximation → variance = mean.",
-      "content_hash": "cca8e767dfe3e060bc17d60b61f68430a38fa0b3b3e8066fb90660b9ff95a9e0",
-      "interface_hash": "sha256:e97638c3f65cb0359f27f46009df41d95f8093e4dac580daf5afdf21f52be9ec",
-      "label": "immunity_variance_equals_mean",
-      "qid": "github:luria_delbruck_fluctuation::immunity_variance_equals_mean",
+      "content": "Hypothesis of acquired hereditary immunity: There is a small finite probability for any bacterium to survive an attack by the virus. Survival confers immunity not only to the individual but also to its offspring. The probability of survival in the first instance does not run in clones; if we find that a bacterium survives an attack, we cannot from this information alone infer that close relatives are likely to survive the attack.",
+      "content_hash": "81015341aa0b0327f633bf60417d17ddcb34dfe8d28bcb55d3e11d412705bb65",
+      "interface_hash": "sha256:a7a45a4ad8355df3687314db5173e5c4543e5613304a0e543bd15e1825536938",
+      "label": "hypothesis_acquired_immunity",
+      "qid": "github:luria_delbruck_fluctuation::hypothesis_acquired_immunity",
       "required_by": [
-        "github:luria_delbruck_fluctuation::hypothesis_acquired_immunity"
+        "github:luria_delbruck_fluctuation::resistance_is_heritable_mutation"
+      ]
+    },
+    {
+      "content": "Hypothesis of mutation: There is a finite probability per time unit for any bacterium to mutate from 'sensitive' to 'resistant.' Every offspring of such a mutant will be resistant, unless reverse mutation occurs. The term 'resistant' means the bacterium will not be killed if exposed to virus, and the possibility of interaction with virus is left open. Mutations occur spontaneously, prior to and independently of virus exposure.",
+      "content_hash": "5481882cd12fef6856017d3da37b8646700c44004d21cb76c9eabf24b0ad1ee8",
+      "interface_hash": "sha256:1fe23c796e7cd1f23c70d5cf608e5852e06cc44b4a22cf696111a2025e5a3039",
+      "label": "hypothesis_mutation",
+      "qid": "github:luria_delbruck_fluctuation::hypothesis_mutation",
+      "required_by": [
+        "github:luria_delbruck_fluctuation::resistance_is_heritable_mutation"
       ]
     },
     {
@@ -67,7 +77,6 @@
       "label": "mutation_high_variance",
       "qid": "github:luria_delbruck_fluctuation::mutation_high_variance",
       "required_by": [
-        "github:luria_delbruck_fluctuation::hypothesis_mutation",
         "github:luria_delbruck_fluctuation::resistance_is_heritable_mutation"
       ]
     },
@@ -98,13 +107,11 @@
       "label": "plating_variance_equals_mean",
       "qid": "github:luria_delbruck_fluctuation::plating_variance_equals_mean",
       "required_by": [
-        "github:luria_delbruck_fluctuation::hypothesis_acquired_immunity",
-        "github:luria_delbruck_fluctuation::hypothesis_mutation",
         "github:luria_delbruck_fluctuation::resistance_is_heritable_mutation"
       ]
     }
   ],
-  "ir_hash": "sha256:e9c80253b05129e26769eda9a2e139f8417c92957ecce1d2cb5de4000db37883",
+  "ir_hash": "sha256:df737f69f99a12873abbc3885025801a28b0c09f578fa62492ecb9dd8e23dda6",
   "manifest_schema_version": 1,
   "package": "luria-delbruck-fluctuation",
   "version": "0.1.0"

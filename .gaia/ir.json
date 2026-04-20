@@ -1,5 +1,5 @@
 {
-  "ir_hash": "sha256:e9c80253b05129e26769eda9a2e139f8417c92957ecce1d2cb5de4000db37883",
+  "ir_hash": "sha256:df737f69f99a12873abbc3885025801a28b0c09f578fa62492ecb9dd8e23dda6",
   "knowledges": [
     {
       "content": "A pure bacterial culture of *Escherichia coli* B is attacked by bacteriophage (bacterial virus) alpha. Sensitive cells are lysed (destroyed) within hours. After further incubation the culture becomes turbid again due to growth of a resistant variant that does not adsorb the virus. This variant retains resistance through many generations in the absence of virus.",
@@ -45,14 +45,8 @@
       "id": "github:luria_delbruck_fluctuation::hypothesis_mutation",
       "label": "hypothesis_mutation",
       "metadata": {
-        "gaia": {
-          "provenance": {
-            "referenced_claims": [
-              "mutation_high_variance",
-              "observed_variance_much_greater_than_mean"
-            ]
-          }
-        }
+        "prior": 0.5,
+        "prior_justification": "Uninformative prior. Evidence should determine belief."
       },
       "module": "motivation",
       "parameters": [],
@@ -67,14 +61,8 @@
       "id": "github:luria_delbruck_fluctuation::hypothesis_acquired_immunity",
       "label": "hypothesis_acquired_immunity",
       "metadata": {
-        "gaia": {
-          "provenance": {
-            "referenced_claims": [
-              "immunity_variance_equals_mean",
-              "observed_variance_much_greater_than_mean"
-            ]
-          }
-        }
+        "prior": 0.5,
+        "prior_justification": "Uninformative prior. Evidence should determine belief."
       },
       "module": "motivation",
       "parameters": [],
@@ -163,6 +151,10 @@
       "exported": false,
       "id": "github:luria_delbruck_fluctuation::immunity_variance_equals_mean",
       "label": "immunity_variance_equals_mean",
+      "metadata": {
+        "prior": 0.95,
+        "prior_justification": "Textbook Poisson result: independent events → variance = mean."
+      },
       "module": "theory",
       "parameters": [],
       "title": "Acquired immunity: variance equals mean (Poisson)",
@@ -175,6 +167,10 @@
       "exported": false,
       "id": "github:luria_delbruck_fluctuation::mutation_high_variance",
       "label": "mutation_high_variance",
+      "metadata": {
+        "prior": 0.9,
+        "prior_justification": "Sound derivation with simplifying assumptions. Qualitative result robust."
+      },
       "module": "theory",
       "parameters": [],
       "title": "Mutation hypothesis: high variance (jackpot distribution)",
@@ -187,6 +183,10 @@
       "exported": false,
       "id": "github:luria_delbruck_fluctuation::p0_mutation_rate_relation",
       "label": "p0_mutation_rate_relation",
+      "metadata": {
+        "prior": 0.95,
+        "prior_justification": "Direct Poisson property: P(0 events) = e^{-m}. Textbook result."
+      },
       "module": "theory",
       "parameters": [],
       "title": "p0 method for estimating mutation rate",
@@ -199,6 +199,10 @@
       "exported": false,
       "id": "github:luria_delbruck_fluctuation::mean_method_mutation_rate",
       "label": "mean_method_mutation_rate",
+      "metadata": {
+        "prior": 0.85,
+        "prior_justification": "Sound derivation with finite-sample approximation."
+      },
       "module": "theory",
       "parameters": [],
       "title": "Mean method for estimating mutation rate",
@@ -224,6 +228,8 @@
       "id": "github:luria_delbruck_fluctuation::plating_variance_equals_mean",
       "label": "plating_variance_equals_mean",
       "metadata": {
+        "prior": 0.9,
+        "prior_justification": "Three independent experiments, all consistent with Poisson sampling.",
         "source_table": "artifacts/paper.pdf, Table 1"
       },
       "module": "exp_plating",
@@ -272,6 +278,8 @@
       "id": "github:luria_delbruck_fluctuation::fluctuation_data_table2",
       "label": "fluctuation_data_table2",
       "metadata": {
+        "prior": 0.9,
+        "prior_justification": "Primary data from 10 experiments. Directly observed counts.",
         "source_table": "artifacts/paper.pdf, Table 2"
       },
       "module": "exp_fluctuation",
@@ -287,6 +295,8 @@
       "id": "github:luria_delbruck_fluctuation::fluctuation_data_table3",
       "label": "fluctuation_data_table3",
       "metadata": {
+        "prior": 0.9,
+        "prior_justification": "Full distributions from 100 and 87 cultures. Large samples.",
         "source_table": "artifacts/paper.pdf, Table 3"
       },
       "module": "exp_fluctuation",
@@ -305,6 +315,9 @@
         "gaia": {
           "provenance": {
             "referenced_claims": [
+              "experimental_std_dev_ratio",
+              "hypothesis_acquired_immunity",
+              "hypothesis_mutation",
               "plating_method_reliable",
               "plating_variance_equals_mean"
             ]
@@ -324,6 +337,8 @@
       "id": "github:luria_delbruck_fluctuation::experimental_std_dev_ratio",
       "label": "experimental_std_dev_ratio",
       "metadata": {
+        "prior": 0.85,
+        "prior_justification": "Computed from raw data. Straightforward arithmetic.",
         "source_table": "artifacts/paper.pdf, Tables 2-3"
       },
       "module": "exp_fluctuation",
@@ -366,8 +381,7 @@
           "provenance": {
             "referenced_claims": [
               "distribution_fit_exp23",
-              "experimental_std_dev_ratio",
-              "mutation_high_variance",
+              "mutation_predicts_clonal_grouping",
               "observed_variance_much_greater_than_mean"
             ]
           }
@@ -376,6 +390,44 @@
       "module": "exp_fluctuation",
       "parameters": [],
       "title": "Clonal grouping observed in data",
+      "type": "claim"
+    },
+    {
+      "content": "compare(Under the mutation hypothesis, the variance of the number of resistant bacteria across replicate cultures is much greater than the mean. The likely variance is $\\text{var}_r = C a^2 N_t^2$ (equation 11), giving a ratio $\\sqrt{\\text{var}_r}/r = \\sqrt{C}/\\ln(N_t C a)$ (equation 12), which is >> 1. Derivation: superposition of partial distributions for clones of each age, each Poisson-distributed, with clone size growing exponentially — the 'slot machine' effect where rare early mutations produce jackpots., Under the acquired immunity hypothesis, each bacterium independently survives virus attack with a fixed small probability. The number of survivors follows a Poisson distribution, so the variance equals the mean: $\\text{var}(\\rho) = \\bar{\\rho}$. Derivation: binomial distribution with small success probability → Poisson approximation → variance = mean., In every fluctuation experiment (Tables 2 and 3), the variance of the number of resistant bacteria across replicate cultures is tremendously higher than could be accounted for by sampling errors. This is in striking contrast to the plating reliability tests (Table 1) where variance equaled the mean, and in direct conflict with the expectation from the hypothesis of acquired immunity (which predicts Poisson-distributed counts with variance equal to mean).)",
+      "content_hash": "2af8394ff0464a704d67f988e4eb9c832b06c63173a507fec7b272e02339e80c",
+      "declaration_index": 7,
+      "exported": false,
+      "id": "github:luria_delbruck_fluctuation::_anon_000",
+      "metadata": {
+        "gaia": {
+          "provenance": {
+            "referenced_claims": [
+              "immunity_variance_equals_mean",
+              "mutation_high_variance",
+              "observed_variance_much_greater_than_mean"
+            ]
+          }
+        },
+        "generated": true,
+        "helper_kind": "comparison_claim"
+      },
+      "module": "exp_fluctuation",
+      "parameters": [],
+      "type": "claim"
+    },
+    {
+      "content": "abduction_validity(support, support, compare)",
+      "content_hash": "4ccad61dc008bbcf2f30f65bc920cc26f35586acf9ec7ee57972c8bcd78f9d5c",
+      "declaration_index": 8,
+      "exported": false,
+      "id": "github:luria_delbruck_fluctuation::_anon_001",
+      "metadata": {
+        "generated": true,
+        "helper_kind": "composition_validity",
+        "warrant": "Both hypotheses attempt to explain the same observation: the distribution of resistant bacteria across replicate cultures. The mutation hypothesis predicts and explains the extreme variance; the acquired immunity hypothesis predicts Poisson variance and is decisively refuted."
+      },
+      "module": "exp_fluctuation",
+      "parameters": [],
       "type": "claim"
     },
     {
@@ -475,6 +527,8 @@
       "id": "github:luria_delbruck_fluctuation::obs_broth_rate",
       "label": "obs_broth_rate",
       "metadata": {
+        "prior": 0.85,
+        "prior_justification": "Mutation rates from five broth experiments.",
         "source_table": "artifacts/paper.pdf, Table 4"
       },
       "module": "mutation_rate",
@@ -490,6 +544,8 @@
       "id": "github:luria_delbruck_fluctuation::obs_synth_rate",
       "label": "obs_synth_rate",
       "metadata": {
+        "prior": 0.85,
+        "prior_justification": "Mutation rates from four synthetic medium experiments.",
         "source_table": "artifacts/paper.pdf, Table 4"
       },
       "module": "mutation_rate",
@@ -498,9 +554,24 @@
       "type": "claim"
     },
     {
+      "content": "Are observations independent? Do they support the same law?",
+      "content_hash": "36cff940124e21b8b39010b74e17da94c7ab9bd0761afb017b63be334a3f7876",
+      "declaration_index": 6,
+      "exported": false,
+      "id": "github:luria_delbruck_fluctuation::_anon_002",
+      "metadata": {
+        "generated": true,
+        "helper_kind": "composition_validity",
+        "warrant": "Broth culture experiments and synthetic medium experiments are conducted under very different metabolic conditions (rich vs minimal medium) and growth rates, yet yield overlapping mutation rate estimates. This cross-condition independence strengthens the inductive evidence for a fixed mutation rate."
+      },
+      "module": "mutation_rate",
+      "parameters": [],
+      "type": "claim"
+    },
+    {
       "content": "The mutation rates obtained by the mean method (average $2.45 \\times 10^{-8}$) are all higher than the value found by the $p_0$ method ($0.47 \\times 10^{-8}$ for Exp. 23). This discrepancy is traced to the same cause as the excess standard deviation: early mutations (prior to time $t_0$) give rise to big clones of resistant bacteria. These big clones do not affect the $p_0$ method (which uses only the fraction of zero-count cultures) but they do inflate the average used by the mean method.",
       "content_hash": "48b45aca09a4d1b9bacff46397b1351d5c9dbf864c33cc35d6b7d0659e8ff52d",
-      "declaration_index": 6,
+      "declaration_index": 7,
       "exported": false,
       "id": "github:luria_delbruck_fluctuation::mutation_rate_discrepancy_two_methods",
       "label": "mutation_rate_discrepancy_two_methods",
@@ -550,21 +621,13 @@
       "exported": false,
       "id": "github:luria_delbruck_fluctuation::aging_cultures_constant_fraction",
       "label": "aging_cultures_constant_fraction",
+      "metadata": {
+        "prior": 0.8,
+        "prior_justification": "Single experiment, qualitatively clear."
+      },
       "module": "discussion",
       "parameters": [],
       "title": "Resistant fraction stable in aging cultures",
-      "type": "claim"
-    },
-    {
-      "content": "The fluctuation test method for studying mutations causing virus resistance has practical advantages: (1) segregation of mutant from normal organisms occurs at the one-cell stage by total elimination of normal bacteria; (2) more than $10^8$ bacteria may be tested on a single plate; (3) the method is applicable whenever the initial number of bacteria times the number of mutations per first division cycle is small, regardless of the absolute mutation rate.",
-      "content_hash": "78928c47258d0a68012dd7db203b179e487a44556db72efefd79157a72791df0",
-      "declaration_index": 2,
-      "exported": false,
-      "id": "github:luria_delbruck_fluctuation::method_advantages",
-      "label": "method_advantages",
-      "module": "discussion",
-      "parameters": [],
-      "title": "Advantages of the fluctuation test method",
       "type": "claim"
     }
   ],
@@ -617,32 +680,69 @@
       "type": "support"
     },
     {
-      "conclusion": "github:luria_delbruck_fluctuation::hypothesis_mutation",
+      "conclusion": "github:luria_delbruck_fluctuation::observed_variance_much_greater_than_mean",
       "metadata": {
         "prior": 0.9,
-        "reason": "@mutation_high_variance predicts variance >> mean due to the clonal structure of resistant bacteria (early mutations → large clones → jackpots). @observed_variance_much_greater_than_mean confirms this prediction: variance/mean ratios of 100-600x in every experiment. The observation matches the mutation prediction qualitatively and quantitatively."
+        "reason": "The @hypothesis_mutation predicts that resistant bacteria arise by spontaneous mutation prior to virus exposure, creating clones of varying sizes. Early mutations produce large clones ('jackpots'), late mutations produce small clones. This clonal structure necessarily generates variance far exceeding the mean across replicate cultures."
       },
       "premises": [
-        "github:luria_delbruck_fluctuation::mutation_high_variance",
-        "github:luria_delbruck_fluctuation::observed_variance_much_greater_than_mean"
+        "github:luria_delbruck_fluctuation::hypothesis_mutation"
       ],
       "scope": "local",
-      "strategy_id": "lcs_35a1587ba0c1818a",
+      "strategy_id": "lcs_386055f88aaed6b8",
       "type": "support"
     },
     {
-      "conclusion": "github:luria_delbruck_fluctuation::hypothesis_acquired_immunity",
+      "background": [
+        "github:luria_delbruck_fluctuation::immunity_predicts_poisson"
+      ],
+      "conclusion": "github:luria_delbruck_fluctuation::observed_variance_much_greater_than_mean",
       "metadata": {
-        "prior": 0.02,
-        "reason": "@immunity_variance_equals_mean predicts Poisson distribution (variance = mean). @observed_variance_much_greater_than_mean shows variance is 100-600x the mean in every experiment. The acquired immunity prediction is falsified by orders of magnitude. This observation is fatal to the hypothesis."
+        "prior": 0.1,
+        "reason": "The @hypothesis_acquired_immunity predicts each bacterium independently survives virus attack with equal probability, giving a Poisson distribution where variance equals mean. This cannot account for the observed variance that is 100-600x the mean."
       },
       "premises": [
+        "github:luria_delbruck_fluctuation::hypothesis_acquired_immunity"
+      ],
+      "scope": "local",
+      "strategy_id": "lcs_e64da1f6def40a43",
+      "type": "support"
+    },
+    {
+      "conclusion": "github:luria_delbruck_fluctuation::_anon_000",
+      "metadata": {
+        "prior": 0.95,
+        "reason": "@mutation_high_variance predicts variance >> mean (equation 11-12), which matches @observed_variance_much_greater_than_mean (variance/mean = 100-600x). @immunity_variance_equals_mean predicts variance = mean (Poisson), which is falsified by orders of magnitude. The mutation prediction matches the observation qualitatively and quantitatively; the immunity prediction is catastrophically wrong."
+      },
+      "premises": [
+        "github:luria_delbruck_fluctuation::mutation_high_variance",
         "github:luria_delbruck_fluctuation::immunity_variance_equals_mean",
         "github:luria_delbruck_fluctuation::observed_variance_much_greater_than_mean"
       ],
       "scope": "local",
-      "strategy_id": "lcs_ea800c14f4f14762",
-      "type": "support"
+      "strategy_id": "lcs_964526c21640a7e5",
+      "type": "compare"
+    },
+    {
+      "conclusion": "github:luria_delbruck_fluctuation::_anon_000",
+      "metadata": {
+        "reason": "Both hypotheses attempt to explain the same observation: the distribution of resistant bacteria across replicate cultures. The mutation hypothesis predicts and explains the extreme variance; the acquired immunity hypothesis predicts Poisson variance and is decisively refuted."
+      },
+      "premises": [
+        "github:luria_delbruck_fluctuation::hypothesis_mutation",
+        "github:luria_delbruck_fluctuation::hypothesis_acquired_immunity",
+        "github:luria_delbruck_fluctuation::mutation_high_variance",
+        "github:luria_delbruck_fluctuation::immunity_variance_equals_mean",
+        "github:luria_delbruck_fluctuation::observed_variance_much_greater_than_mean"
+      ],
+      "scope": "local",
+      "strategy_id": "lcs_e23aed803a2491a1",
+      "sub_strategies": [
+        "lcs_386055f88aaed6b8",
+        "lcs_e64da1f6def40a43",
+        "lcs_964526c21640a7e5"
+      ],
+      "type": "abduction"
     },
     {
       "conclusion": "github:luria_delbruck_fluctuation::observed_variance_much_greater_than_mean",
@@ -677,10 +777,14 @@
       "type": "support"
     },
     {
+      "background": [
+        "github:luria_delbruck_fluctuation::fluctuation_protocol",
+        "github:luria_delbruck_fluctuation::mutation_predicts_clonal_grouping"
+      ],
       "conclusion": "github:luria_delbruck_fluctuation::clonal_grouping_observed",
       "metadata": {
         "prior": 0.85,
-        "reason": "@observed_variance_much_greater_than_mean shows bacteria appear in groups rather than randomly. @distribution_fit_exp23 shows the distribution shape matches the clonal growth model. The simplest explanation for this grouping is genetic relatedness — clones from common mutant ancestors."
+        "reason": "@observed_variance_much_greater_than_mean shows bacteria appear in groups rather than randomly. @distribution_fit_exp23 shows the distribution shape matches the clonal growth model. This is consistent with the theoretical prediction @mutation_predicts_clonal_grouping that mutation produces clonal grouping. The simplest explanation is genetic relatedness — clones from common mutant ancestors."
       },
       "premises": [
         "github:luria_delbruck_fluctuation::observed_variance_much_greater_than_mean",
@@ -691,17 +795,16 @@
       "type": "support"
     },
     {
-      "conclusion": "github:luria_delbruck_fluctuation::clonal_grouping_observed",
+      "conclusion": "github:luria_delbruck_fluctuation::observed_variance_much_greater_than_mean",
       "metadata": {
-        "prior": 0.8,
-        "reason": "@mutation_high_variance predicts std.dev./mean ratio >> 1 (equation 12). @experimental_std_dev_ratio shows experimental ratios are in the same order of magnitude (and typically even larger). Both experimental and theoretical ratios are >> 1, ruling out Poisson and confirming clonal grouping."
+        "prior": 0.85,
+        "reason": "@experimental_std_dev_ratio shows the ratio of standard deviation to mean is >> 1 in every experiment (ranging from 0.33 to 7.8), providing quantitative confirmation that the variance dramatically exceeds the mean across all experimental conditions."
       },
       "premises": [
-        "github:luria_delbruck_fluctuation::experimental_std_dev_ratio",
-        "github:luria_delbruck_fluctuation::mutation_high_variance"
+        "github:luria_delbruck_fluctuation::experimental_std_dev_ratio"
       ],
       "scope": "local",
-      "strategy_id": "lcs_c8b111521f21d1c1",
+      "strategy_id": "lcs_66ab955d18b0807b",
       "type": "support"
     },
     {
@@ -757,6 +860,23 @@
       "scope": "local",
       "strategy_id": "lcs_694581096a1f537d",
       "type": "support"
+    },
+    {
+      "conclusion": "github:luria_delbruck_fluctuation::fixed_mutation_rate_law",
+      "metadata": {
+        "reason": "Broth culture experiments and synthetic medium experiments are conducted under very different metabolic conditions (rich vs minimal medium) and growth rates, yet yield overlapping mutation rate estimates. This cross-condition independence strengthens the inductive evidence for a fixed mutation rate."
+      },
+      "premises": [
+        "github:luria_delbruck_fluctuation::obs_broth_rate",
+        "github:luria_delbruck_fluctuation::obs_synth_rate"
+      ],
+      "scope": "local",
+      "strategy_id": "lcs_877411ec1b829a7d",
+      "sub_strategies": [
+        "lcs_d06e3fd0979b40ab",
+        "lcs_694581096a1f537d"
+      ],
+      "type": "induction"
     },
     {
       "conclusion": "github:luria_delbruck_fluctuation::mutation_rate_consistent_across_conditions",

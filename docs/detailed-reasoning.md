@@ -6,10 +6,12 @@ Formalization of Luria & Delbruck (1943) — Mutations of Bacteria from Virus Se
 
 ```mermaid
 graph LR
-    hypothesis_mutation["Hypothesis 1: Spontaneous mutation (0.58)"]:::derived
-    hypothesis_acquired_immunity["Hypothesis 2: Acquired hereditary immunity (0.04)"]:::derived
-    mutation_rate_mean_method["Mutation rates across experiments (mean method, Table 4) (0.39)"]:::derived
-    resistance_is_heritable_mutation["Conclusion: resistance arises by spontaneous mutation (0.69)"]:::derived
+    hypothesis_mutation["Hypothesis 1: Spontaneous mutation (0.33)"]:::premise
+    hypothesis_acquired_immunity["Hypothesis 2: Acquired hereditary immunity (0.34)"]:::premise
+    mutation_rate_mean_method["Mutation rates across experiments (mean method, Table 4) (0.53)"]:::derived
+    resistance_is_heritable_mutation["Conclusion: resistance arises by spontaneous mutation (0.78)"]:::derived
+    hypothesis_acquired_immunity --> resistance_is_heritable_mutation
+    hypothesis_mutation --> resistance_is_heritable_mutation
     mutation_rate_mean_method --> resistance_is_heritable_mutation
 
     classDef setting fill:#f0f0f0,stroke:#999,color:#333
@@ -56,34 +58,18 @@ graph LR
 
 #### Hypothesis 1: Spontaneous mutation ★
 
-📌 `hypothesis_mutation`   |   Belief: **0.58**
+📌 `hypothesis_mutation`   |   Prior: 0.50   |   Belief: **0.33**
 
 > Hypothesis of mutation: There is a finite probability per time unit for any bacterium to mutate from 'sensitive' to 'resistant.' Every offspring of such a mutant will be resistant, unless reverse mutation occurs. The term 'resistant' means the bacterium will not be killed if exposed to virus, and the possibility of interaction with virus is left open. Mutations occur spontaneously, prior to and independently of virus exposure.
-
-🔗 **support**([Mutation hypothesis: high variance (jackpot distribution)](#mutation_high_variance), [Observed variance >> mean across cultures](#observed_variance_much_greater_than_mean))
-
-<details><summary>Reasoning</summary>
-
-@mutation_high_variance predicts variance >> mean due to the clonal structure of resistant bacteria (early mutations → large clones → jackpots). @observed_variance_much_greater_than_mean confirms this prediction: variance/mean ratios of 100-600x in every experiment. The observation matches the mutation prediction qualitatively and quantitatively.
-
-</details>
 
 
 <a id="hypothesis_acquired_immunity"></a>
 
 #### Hypothesis 2: Acquired hereditary immunity ★
 
-📌 `hypothesis_acquired_immunity`   |   Belief: **0.04**
+📌 `hypothesis_acquired_immunity`   |   Prior: 0.50   |   Belief: **0.34**
 
 > Hypothesis of acquired hereditary immunity: There is a small finite probability for any bacterium to survive an attack by the virus. Survival confers immunity not only to the individual but also to its offspring. The probability of survival in the first instance does not run in clones; if we find that a bacterium survives an attack, we cannot from this information alone infer that close relatives are likely to survive the attack.
-
-🔗 **support**([Acquired immunity: variance equals mean (Poisson)](#immunity_variance_equals_mean), [Observed variance >> mean across cultures](#observed_variance_much_greater_than_mean))
-
-<details><summary>Reasoning</summary>
-
-@immunity_variance_equals_mean predicts Poisson distribution (variance = mean). @observed_variance_much_greater_than_mean shows variance is 100-600x the mean in every experiment. The acquired immunity prediction is falsified by orders of magnitude. This observation is fatal to the hypothesis.
-
-</details>
 
 
 <a id="mutation_predicts_clonal_grouping"></a>
@@ -120,10 +106,10 @@ graph TD
     exponential_growth_model["Exponential growth model"]:::setting
     mutation_rate_definition["Mutation rate definition"]:::setting
     clone_size_age_relation["Clone size-age relation"]:::setting
-    immunity_variance_equals_mean["Acquired immunity: variance equals mean (Poisson) (0.94)"]:::premise
-    mutation_high_variance["Mutation hypothesis: high variance (jackpot distribution) (0.28)"]:::premise
-    p0_mutation_rate_relation["p0 method for estimating mutation rate (0.44)"]:::premise
-    mean_method_mutation_rate["Mean method for estimating mutation rate (0.42)"]:::premise
+    immunity_variance_equals_mean["Acquired immunity: variance equals mean (Poisson) (1.00)"]:::premise
+    mutation_high_variance["Mutation hypothesis: high variance (jackpot distribution) (0.99)"]:::premise
+    p0_mutation_rate_relation["p0 method for estimating mutation rate (0.92)"]:::premise
+    mean_method_mutation_rate["Mean method for estimating mutation rate (0.73)"]:::premise
 
     classDef setting fill:#f0f0f0,stroke:#999,color:#333
     classDef premise fill:#ddeeff,stroke:#4488bb,color:#333
@@ -167,7 +153,7 @@ graph TD
 
 #### Acquired immunity: variance equals mean (Poisson)
 
-📌 `immunity_variance_equals_mean`   |   Belief: **0.94**
+📌 `immunity_variance_equals_mean`   |   Prior: 0.95   |   Belief: **1.00**
 
 > Under the acquired immunity hypothesis, each bacterium independently survives virus attack with a fixed small probability. The number of survivors follows a Poisson distribution, so the variance equals the mean: $\text{var}(\rho) = \bar{\rho}$. Derivation: binomial distribution with small success probability → Poisson approximation → variance = mean.
 
@@ -176,7 +162,7 @@ graph TD
 
 #### Mutation hypothesis: high variance (jackpot distribution)
 
-📌 `mutation_high_variance`   |   Belief: **0.28**
+📌 `mutation_high_variance`   |   Prior: 0.90   |   Belief: **0.99**
 
 > Under the mutation hypothesis, the variance of the number of resistant bacteria across replicate cultures is much greater than the mean. The likely variance is $\text{var}_r = C a^2 N_t^2$ (equation 11), giving a ratio $\sqrt{\text{var}_r}/r = \sqrt{C}/\ln(N_t C a)$ (equation 12), which is >> 1. Derivation: superposition of partial distributions for clones of each age, each Poisson-distributed, with clone size growing exponentially — the 'slot machine' effect where rare early mutations produce jackpots.
 
@@ -185,7 +171,7 @@ graph TD
 
 #### p0 method for estimating mutation rate
 
-📌 `p0_mutation_rate_relation`   |   Belief: **0.44**
+📌 `p0_mutation_rate_relation`   |   Prior: 0.95   |   Belief: **0.92**
 
 > Under the mutation hypothesis, the fraction $p_0$ of cultures with zero resistant bacteria equals $p_0 = e^{-m}$ where $m = a(N_t - N_0)$ is the average number of mutations per culture (equations 4-5). Derivation: mutations are Poisson-distributed in time, so zero mutations has probability $e^{-m}$. This provides a method to estimate $a$ from the fraction of cultures with no resistant bacteria.
 
@@ -194,7 +180,7 @@ graph TD
 
 #### Mean method for estimating mutation rate
 
-📌 `mean_method_mutation_rate`   |   Belief: **0.42**
+📌 `mean_method_mutation_rate`   |   Prior: 0.85   |   Belief: **0.73**
 
 > Under the mutation hypothesis, the average number of resistant bacteria per culture $r$ relates to the mutation rate $a$ via the transcendental equation $r = a N_t \ln(N_t C a)$ (equation 8), solvable numerically for $a$ given observed $r$, $N_t$, and $C$. Derivation: the average $\rho = t a N_t$ (equation 6), corrected for finite samples by excluding mutations before $t_0$ (chosen so on average one mutation occurred before $t_0$ across $C$ cultures).
 
@@ -204,8 +190,8 @@ graph TD
 ```mermaid
 graph TD
     plating_protocol["Plating reliability test protocol"]:::setting
-    plating_variance_equals_mean["Plating reliability: variance equals mean (0.34)"]:::premise
-    plating_method_reliable["Plating method validated as reliable (0.63)"]:::derived
+    plating_variance_equals_mean["Plating reliability: variance equals mean (0.83)"]:::premise
+    plating_method_reliable["Plating method validated as reliable (0.83)"]:::derived
     strat_0(["support"]):::weak
     plating_variance_equals_mean --> strat_0
     strat_0 --> plating_method_reliable
@@ -234,7 +220,7 @@ graph TD
 
 #### Plating reliability: variance equals mean
 
-📌 `plating_variance_equals_mean`   |   Belief: **0.34**
+📌 `plating_variance_equals_mean`   |   Prior: 0.90   |   Belief: **0.83**
 
 > In three plating reliability experiments (Table 1), parallel samples from the same culture were plated and resistant colonies counted:
 > 
@@ -251,7 +237,7 @@ graph TD
 
 #### Plating method validated as reliable
 
-📌 `plating_method_reliable`   |   Belief: **0.63**
+📌 `plating_method_reliable`   |   Belief: **0.83**
 
 > The plating method is reliable: it does not introduce any unrecognized variables that cause the number of resistant colonies to vary from plate to plate or from sample to sample, beyond random sampling. Any excess variance observed in experiments comparing different cultures must therefore originate from the cultures themselves, not from the measurement process.
 
@@ -268,44 +254,52 @@ graph TD
 
 ```mermaid
 graph TD
-    hypothesis_mutation["Hypothesis 1: Spontaneous mutation (0.58)"]:::external
-    mutation_high_variance["Mutation hypothesis: high variance (jackpot distribution) (0.28)"]:::external
-    plating_variance_equals_mean["Plating reliability: variance equals mean (0.34)"]:::external
-    plating_method_reliable["Plating method validated as reliable (0.63)"]:::external
+    hypothesis_mutation["Hypothesis 1: Spontaneous mutation (0.33)"]:::external
+    hypothesis_acquired_immunity["Hypothesis 2: Acquired hereditary immunity (0.34)"]:::external
+    mutation_predicts_clonal_grouping["Mutation hypothesis predicts clonal variance (0.50)"]:::external
+    immunity_predicts_poisson["Immunity hypothesis predicts Poisson distribution (0.50)"]:::external
+    mutation_high_variance["Mutation hypothesis: high variance (jackpot distribution) (0.99)"]:::external
+    plating_variance_equals_mean["Plating reliability: variance equals mean (0.83)"]:::external
+    plating_method_reliable["Plating method validated as reliable (0.83)"]:::external
     fluctuation_protocol["Fluctuation test protocol"]:::setting
-    fluctuation_data_table2["Fluctuation test data (Table 2) (0.42)"]:::premise
-    fluctuation_data_table3["Distribution of resistant bacteria (Table 3) (0.40)"]:::premise
-    observed_variance_much_greater_than_mean["Observed variance >> mean across cultures (0.93)"]:::derived
-    experimental_std_dev_ratio["Std dev / mean ratio: experimental vs calculated (0.48)"]:::premise
-    distribution_fit_exp23["Distribution fit: experimental vs mutation theory (Exp. 23) (0.40)"]:::derived
-    clonal_grouping_observed["Clonal grouping observed in data (0.61)"]:::derived
+    fluctuation_data_table2["Fluctuation test data (Table 2) (0.82)"]:::premise
+    fluctuation_data_table3["Distribution of resistant bacteria (Table 3) (0.72)"]:::premise
+    observed_variance_much_greater_than_mean["Observed variance >> mean across cultures (1.00)"]:::derived
+    experimental_std_dev_ratio["Std dev / mean ratio: experimental vs calculated (0.85)"]:::premise
+    distribution_fit_exp23["Distribution fit: experimental vs mutation theory (Exp. 23) (0.59)"]:::derived
+    clonal_grouping_observed["Clonal grouping observed in data (0.67)"]:::derived
     strat_0(["support"]):::weak
     plating_variance_equals_mean --> strat_0
     strat_0 --> plating_method_reliable
     strat_1(["support"]):::weak
-    mutation_high_variance --> strat_1
-    observed_variance_much_greater_than_mean --> strat_1
-    strat_1 --> hypothesis_mutation
-    strat_3(["support"]):::weak
-    plating_variance_equals_mean --> strat_3
-    plating_method_reliable --> strat_3
-    strat_3 --> observed_variance_much_greater_than_mean
-    strat_4(["support"]):::weak
-    mutation_high_variance --> strat_4
-    fluctuation_data_table3 --> strat_4
-    fluctuation_protocol -.-> strat_4
-    hypothesis_mutation -.-> strat_4
-    strat_4 --> distribution_fit_exp23
+    hypothesis_mutation --> strat_1
+    strat_1 --> observed_variance_much_greater_than_mean
+    strat_2(["support"]):::weak
+    hypothesis_acquired_immunity --> strat_2
+    immunity_predicts_poisson -.-> strat_2
+    strat_2 --> observed_variance_much_greater_than_mean
     strat_5(["support"]):::weak
-    observed_variance_much_greater_than_mean --> strat_5
-    distribution_fit_exp23 --> strat_5
-    strat_5 --> clonal_grouping_observed
+    plating_variance_equals_mean --> strat_5
+    plating_method_reliable --> strat_5
+    strat_5 --> observed_variance_much_greater_than_mean
     strat_6(["support"]):::weak
-    experimental_std_dev_ratio --> strat_6
     mutation_high_variance --> strat_6
-    strat_6 --> clonal_grouping_observed
+    fluctuation_data_table3 --> strat_6
+    fluctuation_protocol -.-> strat_6
+    hypothesis_mutation -.-> strat_6
+    strat_6 --> distribution_fit_exp23
+    strat_7(["support"]):::weak
+    observed_variance_much_greater_than_mean --> strat_7
+    distribution_fit_exp23 --> strat_7
+    fluctuation_protocol -.-> strat_7
+    mutation_predicts_clonal_grouping -.-> strat_7
+    strat_7 --> clonal_grouping_observed
+    strat_8(["support"]):::weak
+    experimental_std_dev_ratio --> strat_8
+    strat_8 --> observed_variance_much_greater_than_mean
     oper_0{{"⊗"}}:::contra
     hypothesis_mutation --- oper_0
+    hypothesis_acquired_immunity --- oper_0
 
     classDef setting fill:#f0f0f0,stroke:#999,color:#333
     classDef premise fill:#ddeeff,stroke:#4488bb,color:#333
@@ -331,7 +325,7 @@ graph TD
 
 #### Fluctuation test data (Table 2)
 
-📌 `fluctuation_data_table2`   |   Belief: **0.42**
+📌 `fluctuation_data_table2`   |   Prior: 0.90   |   Belief: **0.82**
 
 > The numbers of resistant bacteria in series of similar cultures (Table 2) show enormous variation across cultures, far exceeding sampling error. Representative experiments:
 > 
@@ -350,7 +344,7 @@ graph TD
 
 #### Distribution of resistant bacteria (Table 3)
 
-📌 `fluctuation_data_table3`   |   Belief: **0.40**
+📌 `fluctuation_data_table3`   |   Prior: 0.90   |   Belief: **0.72**
 
 > The distribution of resistant bacteria counts across large series of similar cultures (Table 3) shows:
 > 
@@ -377,15 +371,15 @@ graph TD
 
 #### Observed variance >> mean across cultures
 
-📌 `observed_variance_much_greater_than_mean`   |   Belief: **0.93**
+📌 `observed_variance_much_greater_than_mean`   |   Belief: **1.00**
 
 > In every fluctuation experiment (Tables 2 and 3), the variance of the number of resistant bacteria across replicate cultures is tremendously higher than could be accounted for by sampling errors. This is in striking contrast to the plating reliability tests (Table 1) where variance equaled the mean, and in direct conflict with the expectation from the hypothesis of acquired immunity (which predicts Poisson-distributed counts with variance equal to mean).
 
-🔗 **support**([Plating reliability: variance equals mean](#plating_variance_equals_mean), [Plating method validated as reliable](#plating_method_reliable))
+🔗 **support**([Std dev / mean ratio: experimental vs calculated](#experimental_std_dev_ratio))
 
 <details><summary>Reasoning</summary>
 
-@plating_variance_equals_mean shows that when sampling from the SAME culture, variance matches mean (Poisson). @plating_method_reliable confirms the method introduces no artifacts. Therefore the excess variance observed across DIFFERENT cultures is real biological variation, not measurement error.
+@experimental_std_dev_ratio shows the ratio of standard deviation to mean is >> 1 in every experiment (ranging from 0.33 to 7.8), providing quantitative confirmation that the variance dramatically exceeds the mean across all experimental conditions.
 
 </details>
 
@@ -394,7 +388,7 @@ graph TD
 
 #### Std dev / mean ratio: experimental vs calculated
 
-📌 `experimental_std_dev_ratio`   |   Belief: **0.48**
+📌 `experimental_std_dev_ratio`   |   Prior: 0.85   |   Belief: **0.85**
 
 > The experimental ratio of standard deviation to mean number of resistant bacteria per culture was compared to the theoretical prediction from the mutation hypothesis (equation 12). Representative values:
 > 
@@ -414,7 +408,7 @@ graph TD
 
 #### Distribution fit: experimental vs mutation theory (Exp. 23)
 
-📌 `distribution_fit_exp23`   |   Belief: **0.40**
+📌 `distribution_fit_exp23`   |   Belief: **0.59**
 
 > For Experiment 23 (87 cultures, whole culture plated), the experimental distribution of resistant bacteria counts was compared with the approximate theoretical distribution calculated from the mutation hypothesis (Figure 2). The fitting for small values is satisfactory: in particular, the number of cultures with one resistant bacterium (17 observed) very closely fits the theoretical expectation. The classes with 2, 4, 8, etc. are favored in the theoretical distribution due to grouping by bacterial generation.
 
@@ -431,15 +425,15 @@ graph TD
 
 #### Clonal grouping observed in data
 
-📌 `clonal_grouping_observed`   |   Belief: **0.61**
+📌 `clonal_grouping_observed`   |   Belief: **0.67**
 
 > The experiments show clearly that resistant bacteria appear in similar cultures not as random samples but in groups of varying sizes, indicating a correlating cause for such grouping. The assumption of genetic relatedness of the bacteria within such groups (i.e., clonal origin from a common mutant ancestor) offers the simplest explanation.
 
-🔗 **support**([Std dev / mean ratio: experimental vs calculated](#experimental_std_dev_ratio), [Mutation hypothesis: high variance (jackpot distribution)](#mutation_high_variance))
+🔗 **support**([Observed variance >> mean across cultures](#observed_variance_much_greater_than_mean), [Distribution fit: experimental vs mutation theory (Exp. 23)](#distribution_fit_exp23))
 
 <details><summary>Reasoning</summary>
 
-@mutation_high_variance predicts std.dev./mean ratio >> 1 (equation 12). @experimental_std_dev_ratio shows experimental ratios are in the same order of magnitude (and typically even larger). Both experimental and theoretical ratios are >> 1, ruling out Poisson and confirming clonal grouping.
+@observed_variance_much_greater_than_mean shows bacteria appear in groups rather than randomly. @distribution_fit_exp23 shows the distribution shape matches the clonal growth model. This is consistent with the theoretical prediction @mutation_predicts_clonal_grouping that mutation produces clonal grouping. The simplest explanation is genetic relatedness — clones from common mutant ancestors.
 
 </details>
 
@@ -448,39 +442,43 @@ graph TD
 
 ```mermaid
 graph TD
-    p0_mutation_rate_relation["p0 method for estimating mutation rate (0.44)"]:::external
-    mean_method_mutation_rate["Mean method for estimating mutation rate (0.42)"]:::external
-    fluctuation_data_table2["Fluctuation test data (Table 2) (0.42)"]:::external
-    fluctuation_data_table3["Distribution of resistant bacteria (Table 3) (0.40)"]:::external
-    mutation_rate_p0_method_exp23["Mutation rate by p0 method (Exp. 23) (0.50)"]:::derived
-    mutation_rate_mean_method["Mutation rates across experiments (mean method, Table 4) (0.39)"]:::derived
-    mutation_rate_consistent_across_conditions["Mutation rate consistent across conditions (0.52)"]:::derived
-    fixed_mutation_rate_law["Law: fixed mutation rate across conditions (0.66)"]:::derived
-    obs_broth_rate["Mutation rates in broth cultures (0.40)"]:::premise
-    obs_synth_rate["Mutation rates in synthetic medium (0.40)"]:::premise
-    mutation_rate_discrepancy_two_methods["Discrepancy between p0 and mean method (0.56)"]:::derived
-    strat_7(["support"]):::weak
-    p0_mutation_rate_relation --> strat_7
-    fluctuation_data_table3 --> strat_7
-    strat_7 --> mutation_rate_p0_method_exp23
-    strat_8(["support"]):::weak
-    mean_method_mutation_rate --> strat_8
-    fluctuation_data_table2 --> strat_8
-    strat_8 --> mutation_rate_mean_method
+    p0_mutation_rate_relation["p0 method for estimating mutation rate (0.92)"]:::external
+    mean_method_mutation_rate["Mean method for estimating mutation rate (0.73)"]:::external
+    fluctuation_data_table2["Fluctuation test data (Table 2) (0.82)"]:::external
+    fluctuation_data_table3["Distribution of resistant bacteria (Table 3) (0.72)"]:::external
+    mutation_rate_p0_method_exp23["Mutation rate by p0 method (Exp. 23) (0.68)"]:::derived
+    mutation_rate_mean_method["Mutation rates across experiments (mean method, Table 4) (0.53)"]:::derived
+    mutation_rate_consistent_across_conditions["Mutation rate consistent across conditions (0.60)"]:::derived
+    fixed_mutation_rate_law["Law: fixed mutation rate across conditions (0.84)"]:::derived
+    obs_broth_rate["Mutation rates in broth cultures (0.81)"]:::premise
+    obs_synth_rate["Mutation rates in synthetic medium (0.81)"]:::premise
+    mutation_rate_discrepancy_two_methods["Discrepancy between p0 and mean method (0.61)"]:::derived
     strat_9(["support"]):::weak
-    obs_broth_rate --> strat_9
-    strat_9 --> fixed_mutation_rate_law
+    p0_mutation_rate_relation --> strat_9
+    fluctuation_data_table3 --> strat_9
+    strat_9 --> mutation_rate_p0_method_exp23
     strat_10(["support"]):::weak
-    obs_synth_rate --> strat_10
-    strat_10 --> fixed_mutation_rate_law
+    mean_method_mutation_rate --> strat_10
+    fluctuation_data_table2 --> strat_10
+    strat_10 --> mutation_rate_mean_method
     strat_11(["support"]):::weak
-    fixed_mutation_rate_law --> strat_11
-    mutation_rate_mean_method --> strat_11
-    strat_11 --> mutation_rate_consistent_across_conditions
+    obs_broth_rate --> strat_11
+    strat_11 --> fixed_mutation_rate_law
     strat_12(["support"]):::weak
-    mutation_rate_p0_method_exp23 --> strat_12
-    mutation_rate_mean_method --> strat_12
-    strat_12 --> mutation_rate_discrepancy_two_methods
+    obs_synth_rate --> strat_12
+    strat_12 --> fixed_mutation_rate_law
+    strat_13(["induction"]):::weak
+    obs_broth_rate --> strat_13
+    obs_synth_rate --> strat_13
+    strat_13 --> fixed_mutation_rate_law
+    strat_14(["support"]):::weak
+    fixed_mutation_rate_law --> strat_14
+    mutation_rate_mean_method --> strat_14
+    strat_14 --> mutation_rate_consistent_across_conditions
+    strat_15(["support"]):::weak
+    mutation_rate_p0_method_exp23 --> strat_15
+    mutation_rate_mean_method --> strat_15
+    strat_15 --> mutation_rate_discrepancy_two_methods
 
     classDef setting fill:#f0f0f0,stroke:#999,color:#333
     classDef premise fill:#ddeeff,stroke:#4488bb,color:#333
@@ -497,7 +495,7 @@ graph TD
 
 #### Mutation rate by p0 method (Exp. 23)
 
-📌 `mutation_rate_p0_method_exp23`   |   Belief: **0.50**
+📌 `mutation_rate_p0_method_exp23`   |   Belief: **0.68**
 
 > Using the $p_0$ method (proportion of cultures with zero resistant bacteria) on Experiment 23: out of 87 cultures, 29 had no resistant bacteria ($p_0 = 0.33$). From $p_0 = e^{-m}$, the average number of mutations per culture is $m = 1.10$. Since total bacteria per culture was $2.4 \times 10^8$, the mutation rate is:
 > 
@@ -520,7 +518,7 @@ graph TD
 
 #### Mutation rates across experiments (mean method, Table 4) ★
 
-📌 `mutation_rate_mean_method`   |   Belief: **0.39**
+📌 `mutation_rate_mean_method`   |   Belief: **0.53**
 
 > Using the mean method (equation 8: $r = a N_t \ln(N_t C a)$) across all experiments, the mutation rates are consistent (Table 4):
 > 
@@ -552,7 +550,7 @@ graph TD
 
 #### Mutation rate consistent across conditions
 
-📌 `mutation_rate_consistent_across_conditions`   |   Belief: **0.52**
+📌 `mutation_rate_consistent_across_conditions`   |   Belief: **0.60**
 
 > The mutation rate calculated by the mean method does not vary greatly from experiment to experiment. In particular: (1) there is no significant difference between broth cultures and synthetic medium cultures, despite considerable differences in metabolic activity and growth rate; (2) there is no significant difference between 10 cc cultures and 0.2 cc cultures; (3) there is no significant difference between experiments with many and few cultures. This shows that the simple assumption of a fixed small chance of mutation per physiological time unit is vindicated by the results.
 
@@ -569,15 +567,15 @@ graph TD
 
 #### Law: fixed mutation rate across conditions
 
-📌 `fixed_mutation_rate_law`   |   Belief: **0.66**
+📌 `fixed_mutation_rate_law`   |   Belief: **0.84**
 
 > There exists a fixed mutation rate $a$ per bacterium per physiological time unit for the transition from virus-sensitive to virus-resistant in *E. coli* B, independent of culture medium, culture volume, or number of cultures tested. The average value across all experiments is $a \approx 2.45 \times 10^{-8}$ mutations per bacterium per time unit.
 
-🔗 **support**([Mutation rates in synthetic medium](#obs_synth_rate))
+🔗 **induction**([Mutation rates in broth cultures](#obs_broth_rate), [Mutation rates in synthetic medium](#obs_synth_rate))
 
 <details><summary>Reasoning</summary>
 
-@obs_synth_rate shows four synthetic medium experiments yield mutation rates from $1.1$ to $3.0 \times 10^{-8}$, overlapping with the broth culture values despite very different metabolic conditions and growth rates. This cross-medium consistency strongly supports a fixed mutation rate per physiological time unit.
+Broth culture experiments and synthetic medium experiments are conducted under very different metabolic conditions (rich vs minimal medium) and growth rates, yet yield overlapping mutation rate estimates. This cross-condition independence strengthens the inductive evidence for a fixed mutation rate.
 
 </details>
 
@@ -586,7 +584,7 @@ graph TD
 
 #### Mutation rates in broth cultures
 
-📌 `obs_broth_rate`   |   Belief: **0.40**
+📌 `obs_broth_rate`   |   Prior: 0.85   |   Belief: **0.81**
 
 > Experiments in 10.0 cc broth cultures (Exp. 1, 10, 11, 15, 21b) yield mutation rates of $1.8$, $1.4$, $4.1$, $2.1$, and $3.0 \times 10^{-8}$ mutations per bacterium per time unit, respectively (Table 4).
 
@@ -595,7 +593,7 @@ graph TD
 
 #### Mutation rates in synthetic medium
 
-📌 `obs_synth_rate`   |   Belief: **0.40**
+📌 `obs_synth_rate`   |   Prior: 0.85   |   Belief: **0.81**
 
 > Experiments in 0.2 cc synthetic medium cultures (Exp. 16, 17, 22, 23) yield mutation rates of $1.1$, $3.0$, $2.3$, and $2.4 \times 10^{-8}$ mutations per bacterium per time unit, respectively (Table 4).
 
@@ -604,7 +602,7 @@ graph TD
 
 #### Discrepancy between p0 and mean method
 
-📌 `mutation_rate_discrepancy_two_methods`   |   Belief: **0.56**
+📌 `mutation_rate_discrepancy_two_methods`   |   Belief: **0.61**
 
 > The mutation rates obtained by the mean method (average $2.45 \times 10^{-8}$) are all higher than the value found by the $p_0$ method ($0.47 \times 10^{-8}$ for Exp. 23). This discrepancy is traced to the same cause as the excess standard deviation: early mutations (prior to time $t_0$) give rise to big clones of resistant bacteria. These big clones do not affect the $p_0$ method (which uses only the fraction of zero-count cultures) but they do inflate the average used by the mean method.
 
@@ -621,23 +619,22 @@ graph TD
 
 ```mermaid
 graph TD
-    observed_variance_much_greater_than_mean["Observed variance >> mean across cultures (0.93)"]:::external
-    clonal_grouping_observed["Clonal grouping observed in data (0.61)"]:::external
-    mutation_rate_consistent_across_conditions["Mutation rate consistent across conditions (0.52)"]:::external
-    resistance_is_heritable_mutation["Conclusion: resistance arises by spontaneous mutation (0.69)"]:::derived
-    aging_cultures_constant_fraction["Resistant fraction stable in aging cultures (0.42)"]:::premise
-    method_advantages["Advantages of the fluctuation test method (0.50)"]:::orphan
-    strat_5(["support"]):::weak
-    observed_variance_much_greater_than_mean --> strat_5
-    strat_5 --> clonal_grouping_observed
-    strat_13(["support"]):::weak
-    observed_variance_much_greater_than_mean --> strat_13
-    clonal_grouping_observed --> strat_13
-    mutation_rate_consistent_across_conditions --> strat_13
-    strat_13 --> resistance_is_heritable_mutation
-    strat_14(["support"]):::weak
-    aging_cultures_constant_fraction --> strat_14
-    strat_14 --> resistance_is_heritable_mutation
+    observed_variance_much_greater_than_mean["Observed variance >> mean across cultures (1.00)"]:::external
+    clonal_grouping_observed["Clonal grouping observed in data (0.67)"]:::external
+    mutation_rate_consistent_across_conditions["Mutation rate consistent across conditions (0.60)"]:::external
+    resistance_is_heritable_mutation["Conclusion: resistance arises by spontaneous mutation (0.78)"]:::derived
+    aging_cultures_constant_fraction["Resistant fraction stable in aging cultures (0.75)"]:::premise
+    strat_7(["support"]):::weak
+    observed_variance_much_greater_than_mean --> strat_7
+    strat_7 --> clonal_grouping_observed
+    strat_16(["support"]):::weak
+    observed_variance_much_greater_than_mean --> strat_16
+    clonal_grouping_observed --> strat_16
+    mutation_rate_consistent_across_conditions --> strat_16
+    strat_16 --> resistance_is_heritable_mutation
+    strat_17(["support"]):::weak
+    aging_cultures_constant_fraction --> strat_17
+    strat_17 --> resistance_is_heritable_mutation
 
     classDef setting fill:#f0f0f0,stroke:#999,color:#333
     classDef premise fill:#ddeeff,stroke:#4488bb,color:#333
@@ -654,7 +651,7 @@ graph TD
 
 #### Conclusion: resistance arises by spontaneous mutation ★
 
-📌 `resistance_is_heritable_mutation`   |   Belief: **0.69**
+📌 `resistance_is_heritable_mutation`   |   Belief: **0.78**
 
 > The resistance to virus in *E. coli* B is due to a heritable change of the bacterial cell which occurs independently of the action of the virus. The experimental distribution of resistant bacteria conforms to the mutation hypothesis and conflicts with the acquired immunity hypothesis.
 
@@ -671,18 +668,9 @@ graph TD
 
 #### Resistant fraction stable in aging cultures
 
-📌 `aging_cultures_constant_fraction`   |   Belief: **0.42**
+📌 `aging_cultures_constant_fraction`   |   Prior: 0.80   |   Belief: **0.75**
 
 > A culture grown to saturation was tested repeatedly for resistant bacteria and total bacteria over several days. The proportion of resistant bacteria did not change, even when the sensitive bacteria began to die. This shows that resistant bacteria have the same death rate in aging cultures as sensitive bacteria — resistance to virus does not generally come to expression in the cell where the mutation occurred, as assumed by the theory.
-
-
-<a id="method_advantages"></a>
-
-#### Advantages of the fluctuation test method
-
-📌 `method_advantages`   |   Belief: **0.50**
-
-> The fluctuation test method for studying mutations causing virus resistance has practical advantages: (1) segregation of mutant from normal organisms occurs at the one-cell stage by total elimination of normal bacteria; (2) more than $10^8$ bacteria may be tested on a single plate; (3) the method is applicable whenever the initial number of bacteria times the number of mutations per first division cycle is small, regardless of the absolute mutation rate.
 
 
 ## Inference Results
@@ -691,30 +679,29 @@ graph TD
 
 | Label | Type | Prior | Belief | Role |
 |-------|------|-------|--------|------|
-| [hypothesis_acquired_immunity](#hypothesis_acquired_immunity) | claim | — | 0.0391 | derived |
-| [mutation_high_variance](#mutation_high_variance) | claim | — | 0.2795 | independent |
-| [plating_variance_equals_mean](#plating_variance_equals_mean) | claim | — | 0.3382 | independent |
-| [mutation_rate_mean_method](#mutation_rate_mean_method) | claim | — | 0.3942 | derived |
-| [fluctuation_data_table3](#fluctuation_data_table3) | claim | — | 0.3978 | independent |
-| [distribution_fit_exp23](#distribution_fit_exp23) | claim | — | 0.3993 | derived |
-| [obs_synth_rate](#obs_synth_rate) | claim | — | 0.3993 | independent |
-| [obs_broth_rate](#obs_broth_rate) | claim | — | 0.3993 | independent |
-| [fluctuation_data_table2](#fluctuation_data_table2) | claim | — | 0.4217 | independent |
-| [mean_method_mutation_rate](#mean_method_mutation_rate) | claim | — | 0.4217 | independent |
-| [aging_cultures_constant_fraction](#aging_cultures_constant_fraction) | claim | — | 0.4224 | independent |
-| [p0_mutation_rate_relation](#p0_mutation_rate_relation) | claim | — | 0.4417 | independent |
-| [experimental_std_dev_ratio](#experimental_std_dev_ratio) | claim | — | 0.4752 | independent |
-| [immunity_predicts_poisson](#immunity_predicts_poisson) | claim | — | 0.5000 | orphaned |
-| [method_advantages](#method_advantages) | claim | — | 0.5000 | orphaned |
-| [mutation_predicts_clonal_grouping](#mutation_predicts_clonal_grouping) | claim | — | 0.5000 | orphaned |
-| [mutation_rate_p0_method_exp23](#mutation_rate_p0_method_exp23) | claim | — | 0.5007 | derived |
-| [mutation_rate_consistent_across_conditions](#mutation_rate_consistent_across_conditions) | claim | — | 0.5240 | derived |
-| [mutation_rate_discrepancy_two_methods](#mutation_rate_discrepancy_two_methods) | claim | — | 0.5581 | derived |
-| [hypothesis_mutation](#hypothesis_mutation) | claim | — | 0.5796 | derived |
-| [clonal_grouping_observed](#clonal_grouping_observed) | claim | — | 0.6067 | derived |
-| [plating_method_reliable](#plating_method_reliable) | claim | — | 0.6320 | derived |
-| [fixed_mutation_rate_law](#fixed_mutation_rate_law) | claim | — | 0.6638 | derived |
-| [resistance_is_heritable_mutation](#resistance_is_heritable_mutation) | claim | — | 0.6891 | derived |
-| [observed_variance_much_greater_than_mean](#observed_variance_much_greater_than_mean) | claim | — | 0.9254 | derived |
-| [immunity_variance_equals_mean](#immunity_variance_equals_mean) | claim | — | 0.9353 | independent |
-| [hypotheses_exclusive](#hypotheses_exclusive) | claim | 0.95 | 1.0000 | structural |
+| [hypothesis_mutation](#hypothesis_mutation) | claim | 0.50 | 0.3322 | independent |
+| [hypothesis_acquired_immunity](#hypothesis_acquired_immunity) | claim | 0.50 | 0.3365 | independent |
+| [immunity_predicts_poisson](#immunity_predicts_poisson) | claim | — | 0.5000 | background |
+| [mutation_predicts_clonal_grouping](#mutation_predicts_clonal_grouping) | claim | — | 0.5000 | background |
+| [mutation_rate_mean_method](#mutation_rate_mean_method) | claim | — | 0.5286 | derived |
+| [distribution_fit_exp23](#distribution_fit_exp23) | claim | — | 0.5919 | derived |
+| [mutation_rate_consistent_across_conditions](#mutation_rate_consistent_across_conditions) | claim | — | 0.6032 | derived |
+| [mutation_rate_discrepancy_two_methods](#mutation_rate_discrepancy_two_methods) | claim | — | 0.6149 | derived |
+| [clonal_grouping_observed](#clonal_grouping_observed) | claim | — | 0.6683 | derived |
+| [mutation_rate_p0_method_exp23](#mutation_rate_p0_method_exp23) | claim | — | 0.6765 | derived |
+| [fluctuation_data_table3](#fluctuation_data_table3) | claim | 0.90 | 0.7207 | independent |
+| [mean_method_mutation_rate](#mean_method_mutation_rate) | claim | 0.85 | 0.7304 | independent |
+| [aging_cultures_constant_fraction](#aging_cultures_constant_fraction) | claim | 0.80 | 0.7509 | independent |
+| [resistance_is_heritable_mutation](#resistance_is_heritable_mutation) | claim | — | 0.7846 | derived |
+| [obs_broth_rate](#obs_broth_rate) | claim | 0.85 | 0.8084 | independent |
+| [obs_synth_rate](#obs_synth_rate) | claim | 0.85 | 0.8084 | independent |
+| [fluctuation_data_table2](#fluctuation_data_table2) | claim | 0.90 | 0.8202 | independent |
+| [plating_method_reliable](#plating_method_reliable) | claim | — | 0.8311 | derived |
+| [plating_variance_equals_mean](#plating_variance_equals_mean) | claim | 0.90 | 0.8318 | independent |
+| [fixed_mutation_rate_law](#fixed_mutation_rate_law) | claim | — | 0.8418 | derived |
+| [experimental_std_dev_ratio](#experimental_std_dev_ratio) | claim | 0.85 | 0.8483 | independent |
+| [p0_mutation_rate_relation](#p0_mutation_rate_relation) | claim | 0.95 | 0.9209 | independent |
+| [mutation_high_variance](#mutation_high_variance) | claim | 0.90 | 0.9950 | independent |
+| [observed_variance_much_greater_than_mean](#observed_variance_much_greater_than_mean) | claim | — | 0.9951 | derived |
+| [immunity_variance_equals_mean](#immunity_variance_equals_mean) | claim | 0.95 | 0.9952 | independent |
+| [hypotheses_exclusive](#hypotheses_exclusive) | claim | 0.95 | 0.9997 | structural |
